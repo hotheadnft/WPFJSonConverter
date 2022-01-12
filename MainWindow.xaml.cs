@@ -137,10 +137,7 @@ namespace WpfHashlipsJSONConverter
             System.Windows.Application.Current.Shutdown();
         }
 
-        private void Add(object sender, RoutedEventArgs e)
-        {
-        }
-
+     
         private void tableList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             tableList.IsEnabled = true;

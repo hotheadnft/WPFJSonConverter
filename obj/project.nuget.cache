@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "nBP2BEW6lOKBZId0FOfGW3jX6RshqTc4EKS3MtBGcNuy2Xq/VLUUqB7/OdKke1PvR7k42dfqo4nU8lC+MBFUlg==",
+  "dgSpecHash": "f9Vt7yYRyJjF20PslISZgk4P0OHswXO7Q5RKsek2LKo1AtumpTX764X9qsvD6XtQykXSN61MTjYlFDaJ7OhbLA==",
   "success": true,
-  "projectFilePath": "g:\\projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj",
+  "projectFilePath": "G:\\Projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sslater\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\sslater\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",

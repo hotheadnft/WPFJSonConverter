@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "g:\\projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj": {}
+    "G:\\Projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj": {}
   },
   "projects": {
-    "g:\\projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj": {
+    "G:\\Projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "g:\\projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj",
+        "projectUniqueName": "G:\\Projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj",
         "projectName": "WpfHashlipsJSONConverter",
-        "projectPath": "g:\\projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj",
+        "projectPath": "G:\\Projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj",
         "packagesPath": "C:\\Users\\sslater\\.nuget\\packages\\",
-        "outputPath": "g:\\projects\\WPFJSonConverter\\obj\\",
+        "outputPath": "G:\\Projects\\WPFJSonConverter\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\sslater\\AppData\\Roaming\\NuGet\\NuGet.Config",
