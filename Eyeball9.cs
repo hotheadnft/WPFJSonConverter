@@ -34,6 +34,8 @@ namespace WpfHashlipsJSONConverter
         public static int recordCount { get => _recordCount; set => _recordCount = value; }
 
         public int ID { get => _id; set => _id = value; }
+        public string CollectionName { get => _collectionName; set => _collectionName = value; }
+        public string Description { get => _description; set => _description = value; }
         public string Background { get => _background; set => _background = value; }
         public string Eyeball { get => _eyeball; set => _eyeball = value; }
         public string Eyecolor { get => _eyecolor; set => _eyecolor = value; }
@@ -45,21 +47,20 @@ namespace WpfHashlipsJSONConverter
         public string Twitter { get => _twitter; set => _twitter = value; }
         public string Web { get => _web; set => _web = value; }
         public string Name { get => _name; set => _name = value; }
-        public string CollectionName { get => _collectionName; set => _collectionName = value; }
         public int Minted { get => _total_minted; set => _total_minted = value; }
         public int Max_Copies { get => _max_Copies; set => _max_Copies = value; }
         public int Sold { get => _sold; set => _sold = value; }
         public int Price { get => _price; set => _price = value; }
-        public string Description { get => _description; set => _description = value; }
+
 
         public Eyeball9()
         {
             _background = string.Empty;
-            _description = string.Empty;
+            _description = "Hotheads!";
             _bottom_lid = string.Empty;
             _shine = string.Empty;
             _top_lid = string.Empty;
-            _collectionName = string.Empty;
+            _collectionName = "Eyeball9";
             _dcode = string.Empty;
             _eyeball = string.Empty;
             _eyecolor = string.Empty;
@@ -68,9 +69,9 @@ namespace WpfHashlipsJSONConverter
             _name = string.Empty;
             _max_Copies = 0;
             _sold = 0;
-            _twitter = string.Empty;
+            _twitter = "https://twitter.com/hotheadnft.com";
             _total_minted = 0;
-            _web = string.Empty;
+            _web = "Https://wwww.hotheadsnft.com";
         }
 
         public static Eyeball9 CollectionBuildRecord(string nftJSONFile)

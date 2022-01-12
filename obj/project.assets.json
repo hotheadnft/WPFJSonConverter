@@ -1228,11 +1228,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "L:\\Projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj",
+      "projectUniqueName": "g:\\projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj",
       "projectName": "WpfHashlipsJSONConverter",
-      "projectPath": "L:\\Projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj",
+      "projectPath": "g:\\projects\\WPFJSonConverter\\WpfHashlipsJSONConverter.csproj",
       "packagesPath": "C:\\Users\\sslater\\.nuget\\packages\\",
-      "outputPath": "L:\\Projects\\WPFJSonConverter\\obj\\",
+      "outputPath": "g:\\projects\\WPFJSonConverter\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\sslater\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1291,7 +1291,7 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[5.0.12, 5.0.12]"
+            "version": "[5.0.13, 5.0.13]"
           }
         ],
         "frameworkReferences": {
@@ -1302,7 +1302,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

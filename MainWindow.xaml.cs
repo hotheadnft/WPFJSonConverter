@@ -55,6 +55,8 @@ namespace WpfHashlipsJSONConverter
         public MainWindow()
         {
             InitializeComponent();
+            add.IsEnabled = false;
+            view.IsEnabled = false;
             DataContext = this;
         }
 
@@ -161,6 +163,8 @@ namespace WpfHashlipsJSONConverter
         private async void open_Checked(object sender, RoutedEventArgs e)
         {
             OpenDB();
+            add.IsEnabled = true;
+            view.IsEnabled = true;
             showJson();
         }
     }
