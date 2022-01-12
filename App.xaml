@@ -1,0 +1,16 @@
+﻿<Application
+    x:Class="WpfHashlipsJSONConverter.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:WpfHashlipsJSONConverter"
+    StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="MenuButtonTheme.xaml" />
+                <ResourceDictionary Source="TextBoxTheme.xaml" />
+                <ResourceDictionary Source="CollectionButtonTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

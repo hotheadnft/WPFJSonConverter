@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "d4c8c1d2-45dc-4016-9471-4942dffdd724": {
+      "ProjectGuid": "d4c8c1d2-45dc-4016-9471-4942dffdd724",
+      "DisplayName": "WpfHashlipsJSONConverter",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
