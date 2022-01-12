@@ -166,7 +166,7 @@
                         MinWidth="250"
                         Margin="10,15,20,0"
                         VerticalAlignment="Top"
-                        Checked="Add"
+                        Checked="AddButton_Checked"
                         Content="Add"
                         FontSize="18"
                         FontWeight="Bold"
