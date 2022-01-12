@@ -27,6 +27,7 @@
 *.editorconfig
 *.targets
 *.json
+*.sqlite
 obj/
 Debug/
 # Shared objects (inc. Windows DLLs)
