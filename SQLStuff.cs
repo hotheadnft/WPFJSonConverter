@@ -88,7 +88,6 @@ namespace WpfHashlipsJSONConverter
                     break;
                 case "Eyeball9":
                     Eyeball9 eyeball = new();
-
                     JsonSerializerOptions options = new() { WriteIndented = true };
                     //json = JsonSerializer.Serialize<Eyeball9>(eyeball, options);
                     break;
