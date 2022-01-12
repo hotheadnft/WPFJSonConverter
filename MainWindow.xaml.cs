@@ -129,6 +129,11 @@ namespace WpfHashlipsJSONConverter
 
                 currdir = Directory.GetCurrentDirectory();
                 filecount = openFile.FileNames.Length;
+                foreach (string filen in openFile.FileNames)
+                {
+                    filesProcessed.Add(filen);
+                }
+                filesProcessed.Add
             }
         }
 
