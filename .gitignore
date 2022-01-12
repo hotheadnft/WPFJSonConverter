@@ -27,7 +27,8 @@
 *.editorconfig
 *.targets
 *.json
-
+obj/
+Debug/
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so
