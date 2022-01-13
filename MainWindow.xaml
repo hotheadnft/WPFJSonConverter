@@ -340,10 +340,6 @@
                 BorderBrush="Yellow"
                 BorderThickness="2"
                 CornerRadius="20" >
-                <ComboBox>
-                    <.MultiComboBox x:name="joe"
-                                    />
-                </ComboBox>
 
             </Border>
         </Grid>
