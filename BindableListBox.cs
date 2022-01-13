@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Collections.Specialized;
 
-namespace WpfHashlipsJSONConverter
+namespace CustomControls
 {
     /// <summary>
     /// Extends ListBox by making the SelectedItems property read/write.

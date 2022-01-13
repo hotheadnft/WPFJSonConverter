@@ -13,12 +13,12 @@
                             Background="{TemplateBinding Background}">
                             <Border
                                 x:Name="border"
-                                Background="Transparent"
+                                Background="Teal"
                                 BorderBrush="#000"
                                 BorderThickness="2"
                                 CornerRadius="25">
                                 <TextBlock
-                                    Margin="10,0,0,5"
+                                    Margin="10"
                                     VerticalAlignment="Center"
                                     Text="{TemplateBinding Property=Content}" />
                             </Border>
@@ -35,11 +35,10 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="FontWeight" Value="Bold" />
-                <Setter Property="Foreground" Value="Black" />
 
                 <Setter Property="RenderTransform">
                     <Setter.Value>
-                        <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
+                        <ScaleTransform ScaleX="1" ScaleY="1.25" />
                     </Setter.Value>
                 </Setter>
             </Trigger>

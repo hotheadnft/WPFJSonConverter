@@ -99,15 +99,14 @@ namespace WpfHashlipsJSONConverter
             string currdir = string.Empty;
             string[] possibleFilesProcessed = { "" };
             string[] possibleCountProcessed = { "" };
-            string countProcessed;
-            int tempCountProcessed = 0;
+
             string fnameOnly = string.Empty;
-      
+
             // int rows = 0;
             string rows = string.Empty;
             int filecount;
             add.IsChecked = false;
-
+            List<string> templistoffiles = new List<string>();
             //showselected.Visibility = Visibility.Visible;
             //      JsonFileName = DisplayJsonFileBeforeAdding();
 
@@ -130,8 +129,14 @@ namespace WpfHashlipsJSONConverter
                 {
                     filesProcessed.Add(filen);
                 }
+                filebox.Visibility = Visibility.Visible;
+
+                filebox.DataContext = filesProcessed;
+               foreach (string file in filesProcessed)
+                   filebox.Text += Path.GetFileName(file) + Environment.NewLine;
             }
         }
+
         private void TableList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             tableList.IsEnabled = true;

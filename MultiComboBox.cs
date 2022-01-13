@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 using System.ComponentModel;
 using System.Timers;
 
-namespace WpfHashlipsJSONConverter
+namespace CustomControls
 {  
     /// <summary>
     /// A combo box that supports selecting multiple items and two way binding on the selected items collection.    
