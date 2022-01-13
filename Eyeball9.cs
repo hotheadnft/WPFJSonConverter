@@ -52,7 +52,6 @@ namespace WpfHashlipsJSONConverter
         public int Sold { get => _sold; set => _sold = value; }
         public int Price { get => _price; set => _price = value; }
 
-
         public Eyeball9()
         {
             _background = string.Empty;

@@ -112,17 +112,7 @@
                         End min, max, exit row
                     -->
                 </Grid>
-            </Border>
-
-            <!--Image x:Name="weblogo100"
-                   Grid.Row="1"
-                   Grid.Column="1"
-                   Height="100" >
-                <Image.Source>
-                    <StaticResource ResourceKey="weblogo" />
-                </Image.Source>
-            </Image-->
-
+            </Border>          
             <!--  StackPanel for left side buttons  -->
             <Border
                 Grid.Row="1"
@@ -153,7 +143,7 @@
                         Height="50"
                         MinWidth="250"
                         Margin="10,15,20,0"
-                        Checked="open_Checked"
+                        Checked="Open_Checked"
                         Content="Open DB"
                         FontSize="18"
                         FontWeight="Bold"
@@ -204,7 +194,7 @@
                         MinWidth="200"
                         Margin="10,10,20,15"
                         VerticalAlignment="Bottom"
-                        Checked="exit_Checked"
+                        Checked="ButtonExitClick"
                         Content="Exit"
                         FontSize="18"
                         FontWeight="Bold"
@@ -272,7 +262,7 @@
                             BorderBrush="#FFECC7C7"
                             SelectedIndex="0"
                             SelectedValuePath="{Binding Path=Name}"
-                            SelectionChanged="tableList_SelectionChanged">
+                            SelectionChanged="TableList_SelectionChanged">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -340,6 +330,21 @@
                             Text="{Binding Source=Name}" />
                     </Grid>
                 </StackPanel>
+            </Border>
+            <Border Grid.Row="8"
+                Grid.Column="1"
+                Grid.ColumnSpan="4"
+                    Grid.RowSpan="1"
+                Margin="10,10,10,3"
+                Background="Wheat"
+                BorderBrush="Yellow"
+                BorderThickness="2"
+                CornerRadius="20" >
+                <ComboBox>
+                    <.MultiComboBox x:name="joe"
+                                    />
+                </ComboBox>
+
             </Border>
         </Grid>
     </Border>

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -19,9 +16,9 @@ namespace WpfHashlipsJSONConverter
         private string _selectedCollection;
         private string _fullPathToJSON;
         private string _fullPathToDB;
+        public List<String> filesProcessed = new();
         private readonly List<Tables> _alltables = new();
         private readonly List<string> _filteredTables = new();
-        private readonly List<string> _collectionTables = new();
 
         public string FullPathToDB
         {
@@ -105,7 +102,7 @@ namespace WpfHashlipsJSONConverter
             string countProcessed;
             int tempCountProcessed = 0;
             string fnameOnly = string.Empty;
-            List<String> filesProcessed = new List<String>();
+      
             // int rows = 0;
             string rows = string.Empty;
             int filecount;
@@ -133,17 +130,9 @@ namespace WpfHashlipsJSONConverter
                 {
                     filesProcessed.Add(filen);
                 }
-                filesProcessed.Add
             }
         }
-
-        private void exit_Checked(object sender, RoutedEventArgs e)
-        {
-            System.Windows.Application.Current.Shutdown();
-        }
-
-     
-        private void tableList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void TableList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             tableList.IsEnabled = true;
             tableList.DataContext = this;
@@ -162,9 +151,9 @@ namespace WpfHashlipsJSONConverter
             //    folderAdd.IsEnabled = true;
         }
 
-        private async void open_Checked(object sender, RoutedEventArgs e)
+        private async void Open_Checked(object sender, RoutedEventArgs e)
         {
-            OpenDB();
+            await OpenDB();
             add.IsEnabled = true;
             view.IsEnabled = true;
             showJson();
