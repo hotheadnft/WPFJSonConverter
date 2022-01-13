@@ -28,6 +28,7 @@
 *.targets
 *.json
 *.sqlite
+vs/
 obj/
 Debug/
 # Shared objects (inc. Windows DLLs)
