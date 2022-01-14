@@ -28,12 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="MultiComboBox">
-      <HintPath>..\MultiSelectComboBox\MultiComboBox.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="WebLogo.png" />
   </ItemGroup>
 

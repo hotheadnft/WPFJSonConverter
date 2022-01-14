@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:CustomControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
     Width="1355"
@@ -39,6 +38,8 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="95" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -310,6 +311,8 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                             <RowDefinition Height="45" />
                         </Grid.RowDefinitions>
 
@@ -334,38 +337,24 @@
                     </Grid>
                 </StackPanel>
             </Border>
-            <Border
+
+            <ListBox
+                x:Name="lbxFileNameList"
                 Grid.Row="8"
-                Grid.RowSpan="1"
+                Grid.RowSpan="3"
                 Grid.Column="1"
-                Grid.ColumnSpan="4"
-                Margin="10,10,10,3"
+                Grid.ColumnSpan="1"
+                MinHeight="250"
                 Background="Wheat"
-                BorderBrush="Black"
-                BorderThickness="2"
-                CornerRadius="20" />
-            <TextBox x:Name="filebox"
-                     MinHeight="200"
-                     MinWidth="300"
-                     Grid.Row="8"
-                     Grid.Column="1"
-                     Grid.ColumnSpan="4"
-                     Grid.RowSpan="2"
-                     FontFamily="Arial"
-                     FontSize="18"                     
-                                   
-/>
-            <!--local:MultiComboBox x:Name="filebox"
-                                 Height="200"
-                                 MinWidth="300"
-                                 Grid.Row="8"
-                                 Grid.Column="1"
-                                 Grid.ColumnSpan="4"
-                                 ItemsSource="{Binding Path=filesProcessed}"
-                                 
-                                 >
-                
-            </local:MultiComboBox-->
+                FontSize="14"
+                SelectionMode="Extended">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox x:Name="ckdata" Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
         </Grid>
     </Border>
 </Window>

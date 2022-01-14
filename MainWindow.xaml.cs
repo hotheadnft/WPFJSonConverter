@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace WpfHashlipsJSONConverter
@@ -101,12 +102,13 @@ namespace WpfHashlipsJSONConverter
             string[] possibleCountProcessed = { "" };
 
             string fnameOnly = string.Empty;
-
+            lbxFileNameList.Visibility = Visibility.Visible;
+            CheckBox chkbxfilelistpanel = new CheckBox();
             // int rows = 0;
             string rows = string.Empty;
             int filecount;
             add.IsChecked = false;
-            List<string> templistoffiles = new List<string>();
+            List<chkboxState> templistoffiles = new List<chkboxState>();
             //showselected.Visibility = Visibility.Visible;
             //      JsonFileName = DisplayJsonFileBeforeAdding();
 
@@ -120,20 +122,23 @@ namespace WpfHashlipsJSONConverter
             var result = openFile.ShowDialog();
             if (result == true)
             {
-                //lblnftFile.IsEnabled = true;
-                //lblnftFile.Visibility = Visibility.Visible;
-
+                lbxFileNameList.IsEnabled = true;
+                lbxFileNameList.Visibility = Visibility.Visible;
+                chkboxState currentChkBoxState = new chkboxState();
                 currdir = Directory.GetCurrentDirectory();
                 filecount = openFile.FileNames.Length;
                 foreach (string filen in openFile.FileNames)
                 {
-                    filesProcessed.Add(filen);
+                    fnameOnly = Path.GetFileName(filen);
+                    filesProcessed.Add(fnameOnly);              
                 }
-                filebox.Visibility = Visibility.Visible;
-
-                filebox.DataContext = filesProcessed;
-               foreach (string file in filesProcessed)
-                   filebox.Text += Path.GetFileName(file) + Environment.NewLine;
+                
+              
+              //  foreach(string fn in filesProcessed)
+              //  {
+              //    lbxFileNameList.Items.Add(fn);
+              //  }
+                
             }
         }
 
@@ -163,5 +168,19 @@ namespace WpfHashlipsJSONConverter
             view.IsEnabled = true;
             showJson();
         }
+    }
+
+    public class chkboxState
+    {
+        private int id;
+
+        public int Id
+        {
+            get => id;
+            set => id = value;
+        }
+
+        public string Name { get; set; }
+        public bool IsChecked { get; set; }
     }
 }
