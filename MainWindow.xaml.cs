@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace WpfHashlipsJSONConverter
@@ -26,7 +25,7 @@ namespace WpfHashlipsJSONConverter
         {
             get
             {
-                if(ChkboxStateList == null)
+                if (_chkboxStateList == null)
                     _chkboxStateList = new List<ChkboxState>();
                 return _chkboxStateList;
             }
@@ -36,8 +35,9 @@ namespace WpfHashlipsJSONConverter
                 this.OnPropertyChanged(new PropertyChangedEventArgs("ChkboxStateList"));
             }
         }
-        
+
         public event PropertyChangedEventHandler WhichPropertyChanged;
+
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             if (WhichPropertyChanged != null)
@@ -89,7 +89,7 @@ namespace WpfHashlipsJSONConverter
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-  
+
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -128,15 +128,15 @@ namespace WpfHashlipsJSONConverter
 
             string fnameOnly = string.Empty;
             lbxFileNameList.Visibility = Visibility.Visible;
-            CheckBox chkbxfilelistpanel = new CheckBox();
             // int rows = 0;
             string rows = string.Empty;
             int filecount;
             add.IsChecked = false;
-            List<ChkboxState> templistoffiles = new List<ChkboxState>();
+
             //showselected.Visibility = Visibility.Visible;
             //      JsonFileName = DisplayJsonFileBeforeAdding();
 
+            lbxFileNameList.Visibility = Visibility.Visible;
             string[] content = { "" };
             Microsoft.Win32.OpenFileDialog openFile = new()
             {
@@ -149,23 +149,19 @@ namespace WpfHashlipsJSONConverter
             {
                 lbxFileNameList.IsEnabled = true;
                 lbxFileNameList.Visibility = Visibility.Visible;
-                ChkboxState currentChkBoxState = new ChkboxState();
-                currdir = Directory.GetCurrentDirectory();
+                //  currdir = Directory.GetCurrentDirectory();
                 filecount = openFile.FileNames.Length;
                 foreach (string filen in openFile.FileNames)
                 {
                     fnameOnly = Path.GetFileName(filen);
                     filesProcessed.Add(fnameOnly);
-                    currentChkBoxState.Name = fnameOnly;
-                    ChkboxStateList.Add(currentChkBoxState);
                 }
 
-                //filesProcessed.Reverse();
-                //foreach (string fn in filesProcessed)
-                //{
-                //    lbxFileNameList.Items.Add(fn);
-                //}
-                //ckdata.DataContext = filesProcessed;
+                filesProcessed.Reverse();
+                foreach (string fn in filesProcessed)
+                {
+                    lbxFileNameList.Items.Add(fn);
+                }
             }
         }
 
