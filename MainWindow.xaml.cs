@@ -20,6 +20,31 @@ namespace WpfHashlipsJSONConverter
         public List<String> filesProcessed = new();
         private readonly List<Tables> _alltables = new();
         private readonly List<string> _filteredTables = new();
+        public List<ChkboxState> _chkboxStateList;
+
+        private List<ChkboxState> ChkboxStateList
+        {
+            get
+            {
+                if(ChkboxStateList == null)
+                    _chkboxStateList = new List<ChkboxState>();
+                return _chkboxStateList;
+            }
+            set
+            {
+                _chkboxStateList = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs("ChkboxStateList"));
+            }
+        }
+        
+        public event PropertyChangedEventHandler WhichPropertyChanged;
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (WhichPropertyChanged != null)
+            {
+                WhichPropertyChanged(this, e);
+            }
+        }
 
         public string FullPathToDB
         {
@@ -64,7 +89,7 @@ namespace WpfHashlipsJSONConverter
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
+  
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -108,7 +133,7 @@ namespace WpfHashlipsJSONConverter
             string rows = string.Empty;
             int filecount;
             add.IsChecked = false;
-            List<chkboxState> templistoffiles = new List<chkboxState>();
+            List<ChkboxState> templistoffiles = new List<ChkboxState>();
             //showselected.Visibility = Visibility.Visible;
             //      JsonFileName = DisplayJsonFileBeforeAdding();
 
@@ -124,21 +149,23 @@ namespace WpfHashlipsJSONConverter
             {
                 lbxFileNameList.IsEnabled = true;
                 lbxFileNameList.Visibility = Visibility.Visible;
-                chkboxState currentChkBoxState = new chkboxState();
+                ChkboxState currentChkBoxState = new ChkboxState();
                 currdir = Directory.GetCurrentDirectory();
                 filecount = openFile.FileNames.Length;
                 foreach (string filen in openFile.FileNames)
                 {
                     fnameOnly = Path.GetFileName(filen);
-                    filesProcessed.Add(fnameOnly);              
+                    filesProcessed.Add(fnameOnly);
+                    currentChkBoxState.Name = fnameOnly;
+                    ChkboxStateList.Add(currentChkBoxState);
                 }
-                
-              
-              //  foreach(string fn in filesProcessed)
-              //  {
-              //    lbxFileNameList.Items.Add(fn);
-              //  }
-                
+
+                //filesProcessed.Reverse();
+                //foreach (string fn in filesProcessed)
+                //{
+                //    lbxFileNameList.Items.Add(fn);
+                //}
+                //ckdata.DataContext = filesProcessed;
             }
         }
 
@@ -170,7 +197,7 @@ namespace WpfHashlipsJSONConverter
         }
     }
 
-    public class chkboxState
+    public class ChkboxState
     {
         private int id;
 
