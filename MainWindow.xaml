@@ -39,7 +39,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="95" />
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" MinHeight="548.6" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -51,9 +51,9 @@
             </Grid.RowDefinitions>
             <Border
                 Grid.Row="0"
-                Grid.Column="0"
-                Grid.ColumnSpan="7"
-                Margin="20,10,0,3"
+                Grid.Column="1"
+                Grid.ColumnSpan="4"
+                Margin="0,10,0,3"
                 Background="Gray"
                 BorderBrush="Black"
                 BorderThickness="2"
@@ -341,63 +341,83 @@
 
             <Border
                 Grid.Row="8"
-                Grid.Column="1"                
-                Margin="0,10,10,3"
+                Grid.Column="1"
+                Grid.ColumnSpan="5"
+                Margin="3,10,0,2"
                 Background="LightGray"
                 BorderBrush="Yellow"
                 BorderThickness="2"
-                CornerRadius="20">
-                <StackPanel                    
-                    Grid.Row="8"
-                    Grid.RowSpan="1"
-                    Grid.ColumnSpan="3"
-                    Orientation="Horizontal">
-                    <RadioButton
-                        x:Name="selectallfiles"
-                        Height="50"
-                        Content="Select All"                        
-                        Margin="5,5,5,10"
-                        VerticalAlignment="Bottom"
-                        FontSize="18"
-                        Foreground="Black"
-                        FontWeight="Bold"
-                        IsEnabled="False"
-                        Style="{StaticResource MenuButtonTheme}"
-                        />
-                    <RadioButton
-                        x:Name="unselectallfiles"
-                        Height="50"
-                        Content="Un-Select All"                        
-                        Margin="5,5,5,10"
-                        VerticalAlignment="Bottom"
-                        FontSize="18"
-                        Foreground="Black"
-                        FontWeight="Bold"
-                        IsEnabled="False"
-                        Style="{StaticResource MenuButtonTheme}"
-                        />
-                    <RadioButton
-                        x:Name="addselectedfiles"                        
-                        Height="50"
-                        MinWidth="100"
-                        Margin="10,10,20,15"
-                        VerticalAlignment="Bottom"
-                        Content="Add selected"
-                        FontSize="18"
-                        FontWeight="Bold"
-                        Foreground="Black"
-                        IsEnabled="True"
-                        Style="{StaticResource MenuButtonTheme}" />
-                </StackPanel>
+                CornerRadius="20" Grid.RowSpan="2">
+                <Grid Background="Transparent" HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="45" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel
+                        Grid.Row="1"
+                        Grid.RowSpan="3"
+                        Grid.ColumnSpan="5"
+                        Orientation="Horizontal">
+
+                        <RadioButton
+                            x:Name="selectallfiles"
+                            Height="50"
+                            Margin="5,5,5,10"
+                            VerticalAlignment="Top"
+                            Content="Select All"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Foreground="Black"
+                            IsEnabled="False"
+                            Style="{StaticResource MenuButtonTheme}" />
+                        <RadioButton
+                            x:Name="unselectallfiles"
+                            Height="50"
+                            Margin="5,5,5,10"
+                            VerticalAlignment="Top"
+                            Content="Un-Select All"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Foreground="Black"
+                            IsEnabled="False"
+                            Style="{StaticResource MenuButtonTheme}" />
+                        <RadioButton
+                            x:Name="addselectedfiles"
+                            Height="50"
+                            MinWidth="100"
+                            Margin="5,5,5,10"
+                            VerticalAlignment="Top"
+                            Content="Add selected"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Foreground="Black"
+                            IsEnabled="True"
+                            Style="{StaticResource MenuButtonTheme}" />
+                        <ListBox
+                            x:Name="lbxFileNameList"
+                            MinHeight="250"
+                            Background="Wheat"
+                            FontSize="16"
+                            SelectionMode="Extended"
+                            Visibility="Hidden" />
+                    </StackPanel>
+                </Grid>
+
             </Border>
-            <ListBox
-                        x:Name="lbxFileNameList"
-                        MinHeight="250"
-                        Background="Wheat"
-                        FontSize="16"
-                        SelectionMode="Extended"
-                        Visibility="Hidden" />
-       
         </Grid>
     </Border>
 </Window>
