@@ -128,7 +128,7 @@ namespace WpfHashlipsJSONConverter
             string exeDir = Directory.GetCurrentDirectory();
             //read projectmetadata.json to use as template
             var projectTemplate = File.ReadAllLines($"{exeDir}\\projectmetadata.json");
-
+            List<string> filestocheck = new List<string>();
             string jsonFolder = string.Empty;
             string[] possibleFilesProcessed = { "" };
             string[] possibleCountProcessed = { "" };
@@ -160,22 +160,22 @@ namespace WpfHashlipsJSONConverter
                 filecount = openFile.FileNames.Length;
                 jsonFolder = Path.GetDirectoryName(openFile.FileNames[0]);
                 path_parts = jsonFolder.Split('\\');
-                pathToCopy.Append(path_parts[0]+"\\");
+                pathToCopy.Append(path_parts[0] + "\\");
                 for (int i = 1; i < path_parts.Length - 1; i++)
                 {
-                    pathToCopy.Append(path_parts[i]+"\\");
+                    pathToCopy.Append(path_parts[i] + "\\");
                 }
 
                 Directory.SetCurrentDirectory($"{pathToCopy}");
-             
+
                 string currdir = Directory.GetCurrentDirectory();
                 Directory.CreateDirectory("orig");
 
                 foreach (string filen in openFile.FileNames)
                 {
-                   // fnameOnly = Path.GetFileName(filen);
-                   // filesProcessed.Add(fnameOnly);
-                   filesProcessed.Add(filen);
+                    // fnameOnly = Path.GetFileName(filen);
+                    // filesProcessed.Add(fnameOnly);
+                    filesProcessed.Add(filen);
                 }
 
                 filesProcessed.Reverse();
@@ -201,6 +201,58 @@ namespace WpfHashlipsJSONConverter
                     Debug.WriteLine($"Created file {filesProcessed[i]}");
                     //build attributes in two lists as members of record
                     record.parseAttributes(NftMakerToConvert, sw);
+                    //write out top half of template
+                    for (int template = 0; template < 15; template++)
+                    {
+                        if (template == 4)
+                        {
+                            Console.WriteLine($"        { record.name}");
+                            sw.WriteLine($"        { record.name}");
+                            // template++;
+                            continue;
+                        }
+                        //replace description in line 8
+                        if (template == 7)
+                        {
+                            Console.WriteLine($"          { record.description},");
+                            sw.WriteLine($"          { record.description},");
+                            // template++;
+                            continue;
+                        }
+                        if (template == 10)
+                        {
+                            Console.WriteLine($"          { record.name}");
+                            sw.WriteLine($"          { record.name}");
+                            // template++;
+                            continue;
+                        }
+                        Console.WriteLine(projectTemplate[template]);
+                        sw.Write(projectTemplate[template] + Environment.NewLine);
+                    }
+                    //walk each list and add trait_type and value as
+                    for (int index = 0; index < record.trait_type.Count; index++)
+                    {
+                        sw.Write("		 " + record.trait_type[index]);
+                        // sw.Write(record.value[index]);
+                        Console.WriteLine("		 " + record.trait_type[index]);
+                        // Console.WriteLine("		 " + record.value[index]);
+                    }
+                    Console.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
+                    sw.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
+                    sw.Close();
+                }
+              possibleFilesProcessed =  Directory.GetFiles($"{currdir}\\images");
+                foreach (var item in possibleFilesProcessed)
+                {
+                    filestocheck.Add(item);
+                }
+                //filestocheck = FileHelper.GetFilesRecursive("images");
+                for (int i = 0; i < filestocheck.Count - 1; i++)
+                {
+                    //get full path of each image and copy to json folder for upload
+                    path_parts = filestocheck[i].Split('\\');
+                    if (!File.Exists("orig\\" + path_parts[1]))
+                        File.Copy(filestocheck[i], "json\\" + path_parts[1]);
                 }
             }
         }
