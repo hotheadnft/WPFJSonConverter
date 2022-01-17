@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -155,33 +156,41 @@ namespace WpfHashlipsJSONConverter
             {
                 lbxFileNameList.IsEnabled = true;
                 lbxFileNameList.Visibility = Visibility.Visible;
-                
+                StringBuilder pathToCopy = new StringBuilder();
                 filecount = openFile.FileNames.Length;
                 jsonFolder = Path.GetDirectoryName(openFile.FileNames[0]);
-                Directory.SetCurrentDirectory($"{jsonFolder}\\..");
-                string currdir = Directory.GetCurrentDirectory();
                 path_parts = jsonFolder.Split('\\');
+                pathToCopy.Append(path_parts[0]+"\\");
+                for (int i = 1; i < path_parts.Length - 1; i++)
+                {
+                    pathToCopy.Append(path_parts[i]+"\\");
+                }
 
+                Directory.SetCurrentDirectory($"{pathToCopy}");
+             
+                string currdir = Directory.GetCurrentDirectory();
+                Directory.CreateDirectory("orig");
 
                 foreach (string filen in openFile.FileNames)
                 {
-                    fnameOnly = Path.GetFileName(filen);
-                    filesProcessed.Add(fnameOnly);
+                   // fnameOnly = Path.GetFileName(filen);
+                   // filesProcessed.Add(fnameOnly);
+                   filesProcessed.Add(filen);
                 }
-               
+
                 filesProcessed.Reverse();
                 foreach (string fn in filesProcessed)
                 {
-                    lbxFileNameList.Items.Add(fn);
+                    lbxFileNameList.Items.Add(Path.GetFileName(fn));
                 }
                 ///adding entire folder for now
                 var record = new NFT_Maker_format();
                 for (int i = 0; i < filesProcessed.Count; i++)
                 {
-                    fnameOnly= filesProcessed[i];
+                    fnameOnly = Path.GetFileName(filesProcessed[i]);
                     //get json file to orig folder for safe keeping
                     if (!File.Exists($"{currdir}\\orig\\" + fnameOnly))
-                        File.Copy(filesProcessed[i], "..\\orig\\" + fnameOnly);
+                        File.Copy(filesProcessed[i], $"{currdir}\\orig\\" + fnameOnly);
 
                     //read first json file
                     var NftMakerToConvert = File.ReadAllLines(filesProcessed[i]);
@@ -189,7 +198,7 @@ namespace WpfHashlipsJSONConverter
                     //delete and create new json file starting with project template
                     File.Delete(filesProcessed[i]);
                     sw = File.CreateText(filesProcessed[i]);
-                    Console.WriteLine($"Created file {filesProcessed[i]}");
+                    Debug.WriteLine($"Created file {filesProcessed[i]}");
                     //build attributes in two lists as members of record
                     record.parseAttributes(NftMakerToConvert, sw);
                 }
