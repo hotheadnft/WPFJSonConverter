@@ -122,7 +122,13 @@ namespace WpfHashlipsJSONConverter
 
         private void AddButton_Checked(object sender, RoutedEventArgs e)
         {
-            string currdir = string.Empty;
+            StreamWriter sw;
+            string[] path_parts;
+            string exeDir = Directory.GetCurrentDirectory();
+            //read projectmetadata.json to use as template
+            var projectTemplate = File.ReadAllLines($"{exeDir}\\projectmetadata.json");
+
+            string jsonFolder = string.Empty;
             string[] possibleFilesProcessed = { "" };
             string[] possibleCountProcessed = { "" };
 
@@ -149,18 +155,43 @@ namespace WpfHashlipsJSONConverter
             {
                 lbxFileNameList.IsEnabled = true;
                 lbxFileNameList.Visibility = Visibility.Visible;
-                //  currdir = Directory.GetCurrentDirectory();
+                
                 filecount = openFile.FileNames.Length;
+                jsonFolder = Path.GetDirectoryName(openFile.FileNames[0]);
+                Directory.SetCurrentDirectory($"{jsonFolder}\\..");
+                string currdir = Directory.GetCurrentDirectory();
+                path_parts = jsonFolder.Split('\\');
+
+
                 foreach (string filen in openFile.FileNames)
                 {
                     fnameOnly = Path.GetFileName(filen);
                     filesProcessed.Add(fnameOnly);
                 }
-
+               
                 filesProcessed.Reverse();
                 foreach (string fn in filesProcessed)
                 {
                     lbxFileNameList.Items.Add(fn);
+                }
+                ///adding entire folder for now
+                var record = new NFT_Maker_format();
+                for (int i = 0; i < filesProcessed.Count; i++)
+                {
+                    fnameOnly= filesProcessed[i];
+                    //get json file to orig folder for safe keeping
+                    if (!File.Exists($"{currdir}\\orig\\" + fnameOnly))
+                        File.Copy(filesProcessed[i], "..\\orig\\" + fnameOnly);
+
+                    //read first json file
+                    var NftMakerToConvert = File.ReadAllLines(filesProcessed[i]);
+
+                    //delete and create new json file starting with project template
+                    File.Delete(filesProcessed[i]);
+                    sw = File.CreateText(filesProcessed[i]);
+                    Console.WriteLine($"Created file {filesProcessed[i]}");
+                    //build attributes in two lists as members of record
+                    record.parseAttributes(NftMakerToConvert, sw);
                 }
             }
         }
