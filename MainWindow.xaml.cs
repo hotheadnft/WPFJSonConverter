@@ -123,28 +123,10 @@ namespace WpfHashlipsJSONConverter
 
         private void AddButton_Checked(object sender, RoutedEventArgs e)
         {
-            StreamWriter sw;
-            string[] path_parts;
-            string exeDir = Directory.GetCurrentDirectory();
-            //read projectmetadata.json to use as template
-            var projectTemplate = File.ReadAllLines($"{exeDir}\\projectmetadata.json");
-            List<string> filestocheck = new List<string>();
-            string jsonFolder = string.Empty;
-            string[] possibleFilesProcessed = { "" };
-            string[] possibleCountProcessed = { "" };
-
-            string fnameOnly = string.Empty;
-            lbxFileNameList.Visibility = Visibility.Visible;
-            // int rows = 0;
-            string rows = string.Empty;
-            int filecount;
             add.IsChecked = false;
-
+            int filecount;
             //showselected.Visibility = Visibility.Visible;
             //      JsonFileName = DisplayJsonFileBeforeAdding();
-
-            lbxFileNameList.Visibility = Visibility.Visible;
-            string[] content = { "" };
             Microsoft.Win32.OpenFileDialog openFile = new()
             {
                 Filter = "Json files|*.json",
@@ -156,19 +138,39 @@ namespace WpfHashlipsJSONConverter
             {
                 lbxFileNameList.IsEnabled = true;
                 lbxFileNameList.Visibility = Visibility.Visible;
-                StringBuilder pathToCopy = new StringBuilder();
                 filecount = openFile.FileNames.Length;
+                borderfileslist.Visibility = Visibility.Visible;
+                Application.Current.MainWindow = this;
+                Application.Current.MainWindow.Height = 1420;
+                lbxFileNameList.Visibility = Visibility.Visible;
+                StreamWriter sw;
+                string[] path_parts;
+                string[] content = { "" };
+                string imagePath, imageFileName;
+                string exeDir = Directory.GetCurrentDirectory();
+                //read projectmetadata.json to use as template
+                var projectTemplate = File.ReadAllLines($"{exeDir}\\projectmetadata.json");
+                List<string> filestocheck = new List<string>();
+                string jsonFolder = string.Empty;
+                string[] possibleFilesProcessed = { "" };
+                string fnameOnly = string.Empty;
+                string rows = string.Empty;
+
+                StringBuilder pathToCopyJSONFrom = new StringBuilder(); //folder structure is pathToCopyJSONFrom with
+                                                                        //orig,images and folder with json files as sub-folders
+
                 jsonFolder = Path.GetDirectoryName(openFile.FileNames[0]);
                 path_parts = jsonFolder.Split('\\');
-                pathToCopy.Append(path_parts[0] + "\\");
+
+                pathToCopyJSONFrom.Append(path_parts[0] + "\\");
                 for (int i = 1; i < path_parts.Length - 1; i++)
                 {
-                    pathToCopy.Append(path_parts[i] + "\\");
+                    pathToCopyJSONFrom.Append(path_parts[i] + "\\");
                 }
 
-                Directory.SetCurrentDirectory($"{pathToCopy}");
+                Directory.SetCurrentDirectory($"{pathToCopyJSONFrom}");
 
-                string currdir = Directory.GetCurrentDirectory();
+                // string currdir = Directory.GetCurrentDirectory();
                 Directory.CreateDirectory("orig");
 
                 foreach (string filen in openFile.FileNames)
@@ -189,14 +191,15 @@ namespace WpfHashlipsJSONConverter
                 {
                     fnameOnly = Path.GetFileName(filesProcessed[i]);
                     //get json file to orig folder for safe keeping
-                    if (!File.Exists($"{currdir}\\orig\\" + fnameOnly))
-                        File.Copy(filesProcessed[i], $"{currdir}\\orig\\" + fnameOnly);
+                    if (!File.Exists($"{pathToCopyJSONFrom}\\orig\\" + fnameOnly))
+                        File.Copy(filesProcessed[i], $"{pathToCopyJSONFrom}\\orig\\" + fnameOnly);
 
                     //read first json file
                     var NftMakerToConvert = File.ReadAllLines(filesProcessed[i]);
-
+#if !DEBUG
                     //delete and create new json file starting with project template
                     File.Delete(filesProcessed[i]);
+#endif
                     sw = File.CreateText(filesProcessed[i]);
                     Debug.WriteLine($"Created file {filesProcessed[i]}");
                     //build attributes in two lists as members of record
@@ -206,7 +209,7 @@ namespace WpfHashlipsJSONConverter
                     {
                         if (template == 4)
                         {
-                            Console.WriteLine($"        { record.name}");
+                            Debug.WriteLine($"        { record.name}");
                             sw.WriteLine($"        { record.name}");
                             // template++;
                             continue;
@@ -214,46 +217,62 @@ namespace WpfHashlipsJSONConverter
                         //replace description in line 8
                         if (template == 7)
                         {
-                            Console.WriteLine($"          { record.description},");
+                            Debug.WriteLine($"          { record.description},");
                             sw.WriteLine($"          { record.description},");
                             // template++;
                             continue;
                         }
                         if (template == 10)
                         {
-                            Console.WriteLine($"          { record.name}");
+                            Debug.WriteLine($"          { record.name}");
                             sw.WriteLine($"          { record.name}");
                             // template++;
                             continue;
                         }
-                        Console.WriteLine(projectTemplate[template]);
+                        Debug.WriteLine(projectTemplate[template]);
                         sw.Write(projectTemplate[template] + Environment.NewLine);
                     }
                     //walk each list and add trait_type and value as
                     for (int index = 0; index < record.trait_type.Count; index++)
                     {
                         sw.Write("		 " + record.trait_type[index]);
-                        // sw.Write(record.value[index]);
-                        Console.WriteLine("		 " + record.trait_type[index]);
-                        // Console.WriteLine("		 " + record.value[index]);
+
+                        Debug.WriteLine("		 " + record.trait_type[index]);
                     }
-                    Console.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
+                    Debug.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
                     sw.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
                     sw.Close();
                 }
-              possibleFilesProcessed =  Directory.GetFiles($"{currdir}\\images");
-                foreach (var item in possibleFilesProcessed)
+                StringBuilder imagesPathToCopyFrom = new StringBuilder();
+                possibleFilesProcessed = Directory.GetFiles($"{pathToCopyJSONFrom}\\images");
+                try
                 {
-                    filestocheck.Add(item);
+                    foreach (var item in possibleFilesProcessed)
+                    {
+                        imageFileName = Path.GetFileName(item);
+                        imagesPathToCopyFrom.Append(jsonFolder);
+                        imagesPathToCopyFrom.Append("\\");
+                        imagesPathToCopyFrom.Append(imageFileName);
+                        imagesPathToCopyFrom.Replace(".png", ".json");
+                        if (File.Exists(imagesPathToCopyFrom.ToString()))
+                        {
+                            imagesPathToCopyFrom.Replace(".json", ".png");
+                            File.Copy(item, $"{imagesPathToCopyFrom}");
+                        }
+                        // filestocheck.Add(item);
+                    }
                 }
+                catch (Exception er)
+                {
+                    Debug.WriteLine(er.Message);
+                }
+
                 //filestocheck = FileHelper.GetFilesRecursive("images");
-                for (int i = 0; i < filestocheck.Count - 1; i++)
-                {
-                    //get full path of each image and copy to json folder for upload
-                    path_parts = filestocheck[i].Split('\\');
-                    if (!File.Exists("orig\\" + path_parts[1]))
-                        File.Copy(filestocheck[i], "json\\" + path_parts[1]);
-                }
+                //   for (int i = 0; i < filestocheck.Count - 1; i++)
+                //   { //copy image file for each json file
+                //       if (!File.Exists("orig\\" + path_parts[1]))
+                //           File.Copy(filestocheck[i], $"{pathToCopyJSONFrom}" + fnameOnly);
+                // }
             }
         }
 

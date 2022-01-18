@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
     Width="1355"
-    Height="1000"
+    Height="1250"
     AllowsTransparency="True"
     Background="Transparent"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
@@ -340,15 +340,18 @@
             </Border>
 
             <Border
+                x:Name="borderfileslist"
                 Grid.Row="8"
+                Grid.RowSpan="2"
                 Grid.Column="1"
                 Grid.ColumnSpan="5"
                 Margin="3,10,0,2"
                 Background="LightGray"
                 BorderBrush="Yellow"
                 BorderThickness="2"
-                CornerRadius="20" Grid.RowSpan="2">
-                <Grid Background="Transparent" HorizontalAlignment="Stretch">
+                CornerRadius="20">
+                <!--  Visibility="Hidden"  -->
+                <Grid HorizontalAlignment="Stretch" Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="auto" />
@@ -358,26 +361,23 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="45" />
+                        <RowDefinition Height="5" />
                     </Grid.RowDefinitions>
 
                     <StackPanel
-                        Grid.Row="1"
+                        Grid.Row="0"
                         Grid.RowSpan="3"
-                        Grid.ColumnSpan="5"
-                        Orientation="Horizontal">
+                        Grid.Column="0"
+                        Grid.ColumnSpan="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
 
                         <RadioButton
                             x:Name="selectallfiles"
                             Height="50"
                             Margin="5,5,5,10"
-                            VerticalAlignment="Top"
+                            VerticalAlignment="Bottom"
                             Content="Select All"
                             FontSize="18"
                             FontWeight="Bold"
@@ -388,7 +388,7 @@
                             x:Name="unselectallfiles"
                             Height="50"
                             Margin="5,5,5,10"
-                            VerticalAlignment="Top"
+                            VerticalAlignment="Bottom"
                             Content="Un-Select All"
                             FontSize="18"
                             FontWeight="Bold"
@@ -400,21 +400,25 @@
                             Height="50"
                             MinWidth="100"
                             Margin="5,5,5,10"
-                            VerticalAlignment="Top"
+                            VerticalAlignment="Bottom"
                             Content="Add selected"
                             FontSize="18"
                             FontWeight="Bold"
                             Foreground="Black"
                             IsEnabled="True"
                             Style="{StaticResource MenuButtonTheme}" />
-                        <ListBox
-                            x:Name="lbxFileNameList"
-                            MinHeight="250"
-                            Background="Wheat"
-                            FontSize="16"
-                            SelectionMode="Extended"
-                            Visibility="Hidden" />
+
                     </StackPanel>
+                    <ListBox
+                        x:Name="lbxFileNameList"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        MinHeight="250"
+                        Background="Wheat"
+                        FontSize="16"
+                        SelectionMode="Extended"
+                        Visibility="Hidden" />
                 </Grid>
 
             </Border>
