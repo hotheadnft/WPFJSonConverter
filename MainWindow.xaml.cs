@@ -169,14 +169,10 @@ namespace WpfHashlipsJSONConverter
                 }
 
                 Directory.SetCurrentDirectory($"{pathToCopyJSONFrom}");
-
-                // string currdir = Directory.GetCurrentDirectory();
                 Directory.CreateDirectory("orig");
 
                 foreach (string filen in openFile.FileNames)
                 {
-                    // fnameOnly = Path.GetFileName(filen);
-                    // filesProcessed.Add(fnameOnly);
                     filesProcessed.Add(filen);
                 }
 
@@ -200,6 +196,7 @@ namespace WpfHashlipsJSONConverter
                     //delete and create new json file starting with project template
                     File.Delete(filesProcessed[i]);
 #endif
+                    StringBuilder sbJsonRecord = new StringBuilder();
                     sw = File.CreateText(filesProcessed[i]);
                     Debug.WriteLine($"Created file {filesProcessed[i]}");
                     //build attributes in two lists as members of record
@@ -235,11 +232,17 @@ namespace WpfHashlipsJSONConverter
                     //walk each list and add trait_type and value as
                     for (int index = 0; index < record.trait_type.Count; index++)
                     {
-                        sw.Write("		 " + record.trait_type[index]);
-
-                        Debug.WriteLine("		 " + record.trait_type[index]);
+                        sbJsonRecord.Append("		 ");
+                        sbJsonRecord.Append(record.trait_type[index]);
+                        sw.Write(sbJsonRecord);
+                        Debug.Write(sbJsonRecord);
+                        sbJsonRecord.Clear();
                     }
-                    Debug.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
+
+                    sbJsonRecord.Append("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
+                    Debug.Write(sbJsonRecord.ToString());
+
+                    //Debug.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
                     sw.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
                     sw.Close();
                 }
@@ -259,6 +262,7 @@ namespace WpfHashlipsJSONConverter
                             imagesPathToCopyFrom.Replace(".json", ".png");
                             File.Copy(item, $"{imagesPathToCopyFrom}");
                         }
+                        imagesPathToCopyFrom.Clear();
                         // filestocheck.Add(item);
                     }
                 }
