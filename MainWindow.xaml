@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
     Width="1355"
-    Height="1250"
+    Height="800"
     AllowsTransparency="True"
     Background="Transparent"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
@@ -349,8 +349,8 @@
                 Background="LightGray"
                 BorderBrush="Yellow"
                 BorderThickness="2"
-                CornerRadius="20">
-                <!--  Visibility="Hidden"  -->
+                CornerRadius="20"
+                Visibility="Hidden">
                 <Grid HorizontalAlignment="Stretch" Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
@@ -415,7 +415,7 @@
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         MinHeight="250"
-                        Background="Wheat"
+                        Background="LightGray"
                         FontSize="16"
                         SelectionMode="Extended"
                         Visibility="Hidden" />
