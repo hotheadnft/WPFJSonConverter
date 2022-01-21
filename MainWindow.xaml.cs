@@ -20,23 +20,7 @@ namespace WpfHashlipsJSONConverter
         public List<String> filesProcessed = new();
         private readonly List<Tables> _alltables = new();
         private readonly List<string> _filteredTables = new();
-        public List<ChkboxState> _chkboxStateList;
-
-        private List<ChkboxState> ChkboxStateList
-        {
-            get
-            {
-                if (_chkboxStateList == null)
-                    _chkboxStateList = new List<ChkboxState>();
-                return _chkboxStateList;
-            }
-            set
-            {
-                _chkboxStateList = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs("ChkboxStateList"));
-            }
-        }
-
+      
         public event PropertyChangedEventHandler WhichPropertyChanged;
 
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -306,19 +290,27 @@ namespace WpfHashlipsJSONConverter
             view.IsEnabled = true;
             showJson();
         }
-    }
 
-    public class ChkboxState
-    {
-        private int id;
-
-        public int Id
+        private void View_Checked(object sender, RoutedEventArgs e)
         {
-            get => id;
-            set => id = value;
+            string[] jsonFiles;
+          jsonFiles =  GetListOfJsonFiles();
         }
 
-        public string Name { get; set; }
-        public bool IsChecked { get; set; }
+        private string[] GetListOfJsonFiles()
+        {
+            view.IsChecked = false;
+            int filecount;
+            Microsoft.Win32.OpenFileDialog openFile = new()
+            {
+                Filter = "Json files|*.json",
+                Title = "Select file to open",
+                Multiselect = false
+            };
+            var result = openFile.ShowDialog();
+            return openFile.FileNames;
+        }
     }
+
+   
 }

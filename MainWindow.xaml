@@ -169,6 +169,7 @@
                         Style="{StaticResource MenuButtonTheme}" />
 
                     <RadioButton
+                        Checked="View_Checked"
                         x:Name="view"
                         Height="50"
                         MinWidth="200"
