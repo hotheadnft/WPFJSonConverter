@@ -21,7 +21,7 @@
         <BitmapImage x:Key="weblogo" UriSource="/WebLogo.png" />
 
     </Window.Resources>
-    
+
     <Border
         Background="Black"
         BorderBrush="Transparent"
@@ -170,12 +170,12 @@
                         Style="{StaticResource MenuButtonTheme}" />
 
                     <RadioButton
-                        Checked="View_Checked"
                         x:Name="view"
                         Height="50"
                         MinWidth="200"
                         Margin="10,15,20,0"
                         VerticalAlignment="Top"
+                        Checked="View_Checked"
                         Content="View"
                         FontSize="18"
                         FontWeight="Bold"
@@ -253,7 +253,6 @@
                             Grid.ColumnSpan="2"
                             MinWidth="450"
                             Margin="20,5,5,5"
-                            Content="Collection Name"
                             FontFamily="Arial"
                             FontSize="22" />
                         <ComboBox
@@ -280,7 +279,19 @@
                                 <Binding Mode="TwoWay" Path="Name" />
                             </ComboBox.SelectedValue>
                         </ComboBox>
-
+                        <TextBlock Grid.Row="5"
+                                   Margin="5,20,5,5"
+                                   VerticalAlignment="Bottom"
+                                   Grid.Column="0"
+                                   MinHeight="100"
+                                   x:Name="txtblkFileContent"
+                                 Text="{Binding jsonText}"
+                                   Background="Magenta"
+                                   Visibility="Visible"
+                                   MinWidth="500"
+           >
+                            
+                        </TextBlock>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -380,13 +391,13 @@
                             Height="50"
                             Margin="5,5,5,10"
                             VerticalAlignment="Bottom"
+                            Checked="selectallfiles_Checked"
                             Content="Select All"
                             FontSize="18"
                             FontWeight="Bold"
                             Foreground="Black"
                             IsEnabled="False"
-                            Style="{StaticResource MenuButtonTheme}" 
-                            Checked="selectallfiles_Checked"/>
+                            Style="{StaticResource MenuButtonTheme}" />
                         <RadioButton
                             x:Name="unselectallfiles"
                             Height="50"
@@ -412,7 +423,7 @@
                             Style="{StaticResource MenuButtonTheme}" />
 
                     </StackPanel>
-                    <ListBox                        
+                    <ListBox
                         x:Name="lbxFileNameList"
                         Grid.Row="0"
                         Grid.Column="1"
@@ -421,25 +432,18 @@
                         Background="LightGray"
                         FontSize="16"
                         SelectionMode="Extended"
-                        Visibility="Hidden" 
-                        SelectionChanged="lbxFileNameList_SelectionChanged"
-                       >
+                        Visibility="Hidden">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                          
-                                    <TextBlock Text="{Binding Name }" 
-                                               FontSize="16"
-                                               FontWeight="Bold"
-                                               >
-                                       
-                                    </TextBlock>
-
-                             
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Style="{StaticResource MenuButtonTheme}"
+                                    Text="{Binding Name}" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
-
             </Border>
         </Grid>
     </Border>

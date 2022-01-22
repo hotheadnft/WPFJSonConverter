@@ -51,6 +51,15 @@ namespace WpfHashlipsJSONConverter
 
             public string name { get => _name; set => _name = value; }
             public object Current { get; }
+            public List<TableName> tableNames { get; set; }
+            public TableName(TableName[] tarray)
+            {
+                tableNames = new List<TableName>();
+                for (int i = 0; i < tarray.Length; i++)
+                {
+                    tableNames[i] = tarray[i];
+                }
+            }
 
             public bool MoveNext()
             {

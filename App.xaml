@@ -10,6 +10,8 @@
                 <ResourceDictionary Source="MenuButtonTheme.xaml" />
                 <ResourceDictionary Source="TextBoxTheme.xaml" />
                 <ResourceDictionary Source="CollectionButtonTheme.xaml" />
+                <ResourceDictionary Source="FileSelectionTheme.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -10,6 +10,9 @@
     <Page Update="CollectionButtonTheme.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="FileSelectionTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>

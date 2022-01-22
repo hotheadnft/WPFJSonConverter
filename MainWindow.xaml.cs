@@ -21,7 +21,7 @@ namespace WpfHashlipsJSONConverter
         private readonly List<Tables> _alltables = new();
         public List<JSONFiles> jsonDisplayList = new();
         private readonly List<string> _filteredTables = new();
-
+        public string jsonText;
         public event PropertyChangedEventHandler WhichPropertyChanged;
 
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -311,8 +311,13 @@ namespace WpfHashlipsJSONConverter
         private void View_Checked(object sender, RoutedEventArgs e)
         {
             string[] jsonFiles;
+            List<string> viewFile = new List<string>();
             jsonFiles = GetListOfJsonFiles();
+            foreach (string jsonFile in jsonFiles)
+                            filesProcessed.Add(jsonFile);
+            jsonText = File.ReadAllText(filesProcessed[0].ToString());
         }
+        
 
         private string[] GetListOfJsonFiles()
         {
@@ -328,12 +333,7 @@ namespace WpfHashlipsJSONConverter
             return openFile.FileNames;
         }
 
-        private void lbxFileNameList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (lbxFileNameList.SelectedItem != null)
-               Name = (lbxFileNameList.SelectedItem as JSONFiles).Name;
-              
-        }
+     
 
         private void selectallfiles_Checked(object sender, RoutedEventArgs e)
         {
