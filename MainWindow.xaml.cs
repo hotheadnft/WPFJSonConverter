@@ -19,8 +19,9 @@ namespace WpfHashlipsJSONConverter
         private string _fullPathToDB;
         public List<String> filesProcessed = new();
         private readonly List<Tables> _alltables = new();
+        public List<JSONFiles> jsonDisplayList = new();
         private readonly List<string> _filteredTables = new();
-      
+
         public event PropertyChangedEventHandler WhichPropertyChanged;
 
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -108,7 +109,8 @@ namespace WpfHashlipsJSONConverter
         private void AddButton_Checked(object sender, RoutedEventArgs e)
         {
             add.IsChecked = false;
-            int filecount;
+            int fileCount;
+
             //showselected.Visibility = Visibility.Visible;
             //      JsonFileName = DisplayJsonFileBeforeAdding();
             Microsoft.Win32.OpenFileDialog openFile = new()
@@ -122,7 +124,7 @@ namespace WpfHashlipsJSONConverter
             {
                 lbxFileNameList.IsEnabled = true;
                 lbxFileNameList.Visibility = Visibility.Visible;
-                filecount = openFile.FileNames.Length;
+                fileCount = openFile.FileNames.Length;
                 borderfileslist.Visibility = Visibility.Visible;
                 Application.Current.MainWindow = this;
                 Application.Current.MainWindow.Height = 1420;
@@ -161,11 +163,26 @@ namespace WpfHashlipsJSONConverter
                 }
 
                 filesProcessed.Reverse();
-                foreach (string fn in filesProcessed)
+
+                for (int idx = 0; idx < fileCount; idx++)
                 {
-                    lbxFileNameList.Items.Add(Path.GetFileName(fn));
+                    JSONFiles file = new JSONFiles();
+                    file.Name = Path.GetFileName(filesProcessed[idx]);
+                    file.IsSelected = true;
+                    // lbxFileNameList.Items.Add(Path.GetFileName(filesProcessed[idx]));
+                    // lbxFileNameList.SelectedItems.Add(lbxFileNameList.Items[idx]);
+                    jsonDisplayList.Add(file);
                 }
+
+                lbxFileNameList.ItemsSource = jsonDisplayList;
+                foreach (object filetoadd in lbxFileNameList.Items)
+                    lbxFileNameList.SelectedItems.Add(filetoadd);
+
+                ///
                 ///adding entire folder for now
+                ///
+
+                
                 var record = new NFT_Maker_format();
                 for (int i = 0; i < filesProcessed.Count; i++)
                 {
@@ -294,7 +311,7 @@ namespace WpfHashlipsJSONConverter
         private void View_Checked(object sender, RoutedEventArgs e)
         {
             string[] jsonFiles;
-          jsonFiles =  GetListOfJsonFiles();
+            jsonFiles = GetListOfJsonFiles();
         }
 
         private string[] GetListOfJsonFiles()
@@ -310,7 +327,46 @@ namespace WpfHashlipsJSONConverter
             var result = openFile.ShowDialog();
             return openFile.FileNames;
         }
+
+        private void lbxFileNameList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (lbxFileNameList.SelectedItem != null)
+               Name = (lbxFileNameList.SelectedItem as JSONFiles).Name;
+              
+        }
+
+        private void selectallfiles_Checked(object sender, RoutedEventArgs e)
+        {
+            foreach (object filetoadd in lbxFileNameList.Items)
+                lbxFileNameList.SelectedItems.Add(filetoadd);
+        }
     }
 
-   
+    public class JSONFiles
+    {
+        private string _name;
+        private bool _isSelected;
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+            }
+        }
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+            }
+        }
+
+        public JSONFiles()
+        {
+        }
+    }
 }

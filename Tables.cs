@@ -31,22 +31,36 @@ namespace WpfHashlipsJSONConverter
 
         public IEnumerator<TableName> GetEnumerator()
         {
-            throw new System.NotImplementedException();
+            return null;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new System.NotImplementedException();
+            return (IEnumerator)GetEnumerator();
         }
 
-        public class TableName
+        public class TableName:IEnumerator
         {
             private string _name;
-
+            public TableName(string name)
+            {
+                _name=name;
+            }
             public TableName()
             { }
 
             public string name { get => _name; set => _name = value; }
+            public object Current { get; }
+
+            public bool MoveNext()
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void Reset()
+            {
+                throw new System.NotImplementedException();
+            }
         }
     }
 }

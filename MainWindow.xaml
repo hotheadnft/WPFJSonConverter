@@ -21,6 +21,7 @@
         <BitmapImage x:Key="weblogo" UriSource="/WebLogo.png" />
 
     </Window.Resources>
+    
     <Border
         Background="Black"
         BorderBrush="Transparent"
@@ -384,7 +385,8 @@
                             FontWeight="Bold"
                             Foreground="Black"
                             IsEnabled="False"
-                            Style="{StaticResource MenuButtonTheme}" />
+                            Style="{StaticResource MenuButtonTheme}" 
+                            Checked="selectallfiles_Checked"/>
                         <RadioButton
                             x:Name="unselectallfiles"
                             Height="50"
@@ -410,7 +412,7 @@
                             Style="{StaticResource MenuButtonTheme}" />
 
                     </StackPanel>
-                    <ListBox
+                    <ListBox                        
                         x:Name="lbxFileNameList"
                         Grid.Row="0"
                         Grid.Column="1"
@@ -419,7 +421,23 @@
                         Background="LightGray"
                         FontSize="16"
                         SelectionMode="Extended"
-                        Visibility="Hidden" />
+                        Visibility="Hidden" 
+                        SelectionChanged="lbxFileNameList_SelectionChanged"
+                       >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                          
+                                    <TextBlock Text="{Binding Name }" 
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               >
+                                       
+                                    </TextBlock>
+
+                             
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Grid>
 
             </Border>
