@@ -80,7 +80,7 @@ namespace WpfHashlipsJSONConverter
                 case "InImage":
                     InImage image = new();
                     options = new JsonSerializerOptions { WriteIndented = true };
-                    json = System.Text.Json.JsonSerializer.Serialize(image);
+                    json = System.Text.Json.JsonSerializer.Serialize(image,options);
                     break;
 
                 case "Eyeball9":
