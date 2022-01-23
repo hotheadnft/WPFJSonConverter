@@ -22,6 +22,7 @@ namespace WpfHashlipsJSONConverter
         public List<JSONFiles> jsonDisplayList = new();
         private readonly List<string> _filteredTables = new();
         public string jsonText;
+
         public event PropertyChangedEventHandler WhichPropertyChanged;
 
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -57,6 +58,8 @@ namespace WpfHashlipsJSONConverter
                     _selectedCollection = value;
                     NotifyPropertyChanged(_selectedCollection);
                     collectionName.Content = value;
+                   
+                    showJsonTemplate();
                 }
             }
         }
@@ -65,8 +68,10 @@ namespace WpfHashlipsJSONConverter
         {
             InitializeComponent();
             add.IsEnabled = false;
-            view.IsEnabled = false;
+            view.IsEnabled = true;
             DataContext = this;
+            txtblkFileContent.Visibility = Visibility.Hidden;
+            templateDisplay.Visibility = Visibility.Hidden;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -111,8 +116,6 @@ namespace WpfHashlipsJSONConverter
             add.IsChecked = false;
             int fileCount;
 
-            //showselected.Visibility = Visibility.Visible;
-            //      JsonFileName = DisplayJsonFileBeforeAdding();
             Microsoft.Win32.OpenFileDialog openFile = new()
             {
                 Filter = "Json files|*.json",
@@ -128,6 +131,7 @@ namespace WpfHashlipsJSONConverter
                 borderfileslist.Visibility = Visibility.Visible;
                 Application.Current.MainWindow = this;
                 Application.Current.MainWindow.Height = 1420;
+                Application.Current.MainWindow.Width = 1500;
                 lbxFileNameList.Visibility = Visibility.Visible;
                 StreamWriter sw;
                 string[] path_parts;
@@ -169,8 +173,6 @@ namespace WpfHashlipsJSONConverter
                     JSONFiles file = new JSONFiles();
                     file.Name = Path.GetFileName(filesProcessed[idx]);
                     file.IsSelected = true;
-                    // lbxFileNameList.Items.Add(Path.GetFileName(filesProcessed[idx]));
-                    // lbxFileNameList.SelectedItems.Add(lbxFileNameList.Items[idx]);
                     jsonDisplayList.Add(file);
                 }
 
@@ -182,7 +184,6 @@ namespace WpfHashlipsJSONConverter
                 ///adding entire folder for now
                 ///
 
-                
                 var record = new NFT_Maker_format();
                 for (int i = 0; i < filesProcessed.Count; i++)
                 {
@@ -305,24 +306,30 @@ namespace WpfHashlipsJSONConverter
             await OpenDB();
             add.IsEnabled = true;
             view.IsEnabled = true;
-            showJson();
+            //showJson();
         }
 
         private void View_Checked(object sender, RoutedEventArgs e)
         {
             string[] jsonFiles;
-            List<string> viewFile = new List<string>();
+
+            //  List<string> viewFile = new List<string>();
             jsonFiles = GetListOfJsonFiles();
             foreach (string jsonFile in jsonFiles)
-                            filesProcessed.Add(jsonFile);
+                filesProcessed.Add(jsonFile);
             jsonText = File.ReadAllText(filesProcessed[0].ToString());
+            Application.Current.MainWindow = this;
+            Application.Current.MainWindow.Height = 1200;
+            Application.Current.MainWindow.Width = 1500;
+            txtblkFileContent.Visibility = Visibility.Visible;
+
+            txtblkFileContent.Text = jsonText;
         }
-        
 
         private string[] GetListOfJsonFiles()
         {
             view.IsChecked = false;
-            int filecount;
+
             Microsoft.Win32.OpenFileDialog openFile = new()
             {
                 Filter = "Json files|*.json",
@@ -333,7 +340,19 @@ namespace WpfHashlipsJSONConverter
             return openFile.FileNames;
         }
 
-     
+        public string GetProjectMetadataFile()
+        {
+            Microsoft.Win32.OpenFileDialog openFile = new()
+            {
+                Filter = "Json files|projectmetadata.json",
+                Title = "PROJECTMETADAT.JSON",
+                Multiselect = false
+            };
+            var result = openFile.ShowDialog();
+
+            List<string> list = new List<string>(openFile.FileNames);
+            return list[0];
+        }
 
         private void selectallfiles_Checked(object sender, RoutedEventArgs e)
         {

@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
-    Width="1355"
+    Width="1455"
     Height="800"
     AllowsTransparency="True"
     Background="Transparent"
@@ -279,19 +279,20 @@
                                 <Binding Mode="TwoWay" Path="Name" />
                             </ComboBox.SelectedValue>
                         </ComboBox>
-                        <TextBlock Grid.Row="5"
-                                   Margin="5,20,5,5"
-                                   VerticalAlignment="Bottom"
-                                   Grid.Column="0"
-                                   MinHeight="100"
-                                   x:Name="txtblkFileContent"
-                                 Text="{Binding jsonText}"
-                                   Background="Magenta"
-                                   Visibility="Visible"
-                                   MinWidth="500"
-           >
-                            
-                        </TextBlock>
+                        <TextBox
+                            x:Name="txtblkFileContent"
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            MinWidth="450"
+                            MinHeight="100"
+                            Margin="5,20,5,5"
+                            Background="LightBlue"
+                            VerticalAlignment="Top"
+                            AcceptsReturn="True"
+                            FontSize="16"
+                            HorizontalScrollBarVisibility="Auto"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
                     </Grid>
                 </StackPanel>
             </Border>
@@ -336,7 +337,6 @@
                             Grid.ColumnSpan="2"
                             MinWidth="475"
                             Margin="20,5,5,5"
-                            Content="Template"
                             FontFamily="Arial"
                             FontSize="22" />
                         <TextBlock
@@ -346,8 +346,10 @@
                             MinWidth="100"
                             MinHeight="230"
                             MaxWidth="350"
-                            Background="LightCyan"
-                            Text="{Binding Source=Name}" />
+                            FontSize="16"
+                            FontFamily="Arial"
+                            Background="LightBlue"
+                             />
                     </Grid>
                 </StackPanel>
             </Border>
@@ -438,8 +440,8 @@
                                 <TextBlock
                                     FontSize="16"
                                     FontWeight="Bold"
-                                    Style="{StaticResource MenuButtonTheme}"
-                                    Text="{Binding Name}" />
+                                    Text="{Binding Name}"
+                                    Visibility="Hidden" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

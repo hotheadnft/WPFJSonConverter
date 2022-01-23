@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -14,7 +13,7 @@ namespace WpfHashlipsJSONConverter
     {
         public async Task<List<string>> GetTables(string fullPathDB)
         {
-            SQLiteConnection connection = new($"Data Source={fullPathDB}");
+            using SQLiteConnection connection = new($"Data Source={fullPathDB}");
             connection.Open();
             _fullPathToDB = connection.FileName;
             FullPathToDB = fullPathDB;
@@ -48,7 +47,7 @@ namespace WpfHashlipsJSONConverter
                 currdir = Directory.GetCurrentDirectory();
                 filecount = openFile.FileNames.Length;
                 fileNameToDisplay.IsEnabled = true;
-                fileNameToDisplay.Content = openFile.FileName;
+                fileNameToDisplay.Content = Path.GetFileName(openFile.FileName);
                 fileNameToDisplay.Visibility = System.Windows.Visibility.Visible;
 
                 FullPathToDB = openFile.FileName;
@@ -71,40 +70,32 @@ namespace WpfHashlipsJSONConverter
             return 0;
         }
 
-        public void showJson()
+        public void showJsonTemplate()
         {
+            JsonSerializerOptions options;
             string json = string.Empty;
             string jsonDisplay = String.Empty;
             switch (SelectedCollection)
             {
                 case "InImage":
                     InImage image = new();
+                    options = new JsonSerializerOptions { WriteIndented = true };
                     json = System.Text.Json.JsonSerializer.Serialize(image);
-                    jsonDisplay = JsonConvert.SerializeObject(json, Newtonsoft.Json.Formatting.Indented);
-                    //templateDisplay.DataContext = this;
-                    //templateDisplay.Text = jsonDisplay;
-                    templateDisplay.DataContext = image;
-                    templateDisplay.Visibility = System.Windows.Visibility.Visible;
                     break;
 
                 case "Eyeball9":
                     Eyeball9 eyeball = new();
-               //     json = System.Text.Json.JsonSerializer.Serialize(eyeball);
-
-                    var options = new JsonSerializerOptions { WriteIndented = true };
-
+                    options = new JsonSerializerOptions { WriteIndented = true };
                     json = System.Text.Json.JsonSerializer.Serialize(eyeball, options);
-
-                //    jsonDisplay = JsonConvert.SerializeObject(json, Newtonsoft.Json.Formatting.Indented);
-
-                    templateDisplay.DataContext = this;
-                    templateDisplay.Text = json;
-                    templateDisplay.Visibility = System.Windows.Visibility.Visible;
                     break;
 
                 default:
                     break;
             }
+
+            //templateDisplay.DataContext = this;
+            templateDisplay.Text = json;
+            templateDisplay.Visibility = System.Windows.Visibility.Visible;
 
             Debug.WriteLine(json);
             open.IsChecked = false;

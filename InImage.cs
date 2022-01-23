@@ -41,19 +41,19 @@ namespace WpfHashlipsJSONConverter
         {
             _id = 0;
             _name = string.Empty;
+            _description = "Hotheads!";
             _max_Copies = 0;
             _sold = 0;
             _twitter = string.Empty;
             _minted = 0;
             _web = string.Empty;
+            _collectionName = "InImage";
             _background = string.Empty;
             _colorDepth = string.Empty;
             _dimensions = string.Empty;
             _dcode = string.Empty;
-            _twitter = string.Empty;
-            _web = string.Empty;
-            _description = string.Empty;
-            _collectionName = string.Empty;
+            _twitter = "https://twitter.com/hotheadnft.com";
+            _web = "Https://wwww.hotheadsnft.com";
         }
 
         public static InImage CollectionBuildRecord(string nftJSONFile)
