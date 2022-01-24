@@ -58,7 +58,7 @@ namespace WpfHashlipsJSONConverter
                     _selectedCollection = value;
                     NotifyPropertyChanged(_selectedCollection);
                     collectionName.Content = value;
-                   
+
                     showJsonTemplate();
                 }
             }
@@ -125,14 +125,8 @@ namespace WpfHashlipsJSONConverter
             var result = openFile.ShowDialog();
             if (result == true)
             {
-                lbxFileNameList.IsEnabled = true;
-                lbxFileNameList.Visibility = Visibility.Visible;
                 fileCount = openFile.FileNames.Length;
-                borderfileslist.Visibility = Visibility.Visible;
-                Application.Current.MainWindow = this;
-                Application.Current.MainWindow.Height = 1420;
-                Application.Current.MainWindow.Width = 1500;
-                lbxFileNameList.Visibility = Visibility.Visible;
+
                 StreamWriter sw;
                 string[] path_parts;
                 string[] content = { "" };
@@ -176,14 +170,6 @@ namespace WpfHashlipsJSONConverter
                     jsonDisplayList.Add(file);
                 }
 
-                lbxFileNameList.ItemsSource = jsonDisplayList;
-                foreach (object filetoadd in lbxFileNameList.Items)
-                    lbxFileNameList.SelectedItems.Add(filetoadd);
-
-                ///
-                ///adding entire folder for now
-                ///
-
                 var record = new NFT_Maker_format();
                 for (int i = 0; i < filesProcessed.Count; i++)
                 {
@@ -202,13 +188,13 @@ namespace WpfHashlipsJSONConverter
                     sw = File.CreateText(filesProcessed[i]);
                     Debug.WriteLine($"Created file {filesProcessed[i]}");
                     //build attributes in two lists as members of record
-                    record.parseAttributes(NftMakerToConvert, sw);
+                    record.parseAttributes(NftMakerToConvert);
                     //write out top half of template
                     for (int template = 0; template < 15; template++)
                     {
                         if (template == 4)
                         {
-                            Debug.WriteLine($"        { record.name}");
+                           // Debug.WriteLine($"        { record.name}");
                             sw.WriteLine($"        { record.name}");
                             // template++;
                             continue;
@@ -216,19 +202,19 @@ namespace WpfHashlipsJSONConverter
                         //replace description in line 8
                         if (template == 7)
                         {
-                            Debug.WriteLine($"          { record.description},");
+                          //  Debug.WriteLine($"          { record.description},");
                             sw.WriteLine($"          { record.description},");
                             // template++;
                             continue;
                         }
                         if (template == 10)
                         {
-                            Debug.WriteLine($"          { record.name}");
+                           // Debug.WriteLine($"          { record.name}");
                             sw.WriteLine($"          { record.name}");
                             // template++;
                             continue;
                         }
-                        Debug.WriteLine(projectTemplate[template]);
+                      // Debug.WriteLine(projectTemplate[template]);
                         sw.Write(projectTemplate[template] + Environment.NewLine);
                     }
                     //walk each list and add trait_type and value as
@@ -242,14 +228,16 @@ namespace WpfHashlipsJSONConverter
                     }
 
                     sbJsonRecord.Append("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
-                    Debug.Write(sbJsonRecord.ToString());
+                  //  Debug.Write(sbJsonRecord.ToString());
 
                     //Debug.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
                     sw.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
+                    sbJsonRecord.Clear();
                     sw.Close();
                 }
                 StringBuilder imagesPathToCopyFrom = new StringBuilder();
                 possibleFilesProcessed = Directory.GetFiles($"{pathToCopyJSONFrom}\\images");
+
                 try
                 {
                     foreach (var item in possibleFilesProcessed)
@@ -313,14 +301,15 @@ namespace WpfHashlipsJSONConverter
         {
             string[] jsonFiles;
 
+            Application.Current.MainWindow = this;
+            Application.Current.MainWindow.Height = 700;
+            Application.Current.MainWindow.Width = 1600;
             //  List<string> viewFile = new List<string>();
             jsonFiles = GetListOfJsonFiles();
             foreach (string jsonFile in jsonFiles)
                 filesProcessed.Add(jsonFile);
             jsonText = File.ReadAllText(filesProcessed[0].ToString());
-            Application.Current.MainWindow = this;
-            Application.Current.MainWindow.Height = 1200;
-            Application.Current.MainWindow.Width = 1500;
+          
             txtblkFileContent.Visibility = Visibility.Visible;
 
             txtblkFileContent.Text = jsonText;
@@ -352,12 +341,6 @@ namespace WpfHashlipsJSONConverter
 
             List<string> list = new List<string>(openFile.FileNames);
             return list[0];
-        }
-
-        private void selectallfiles_Checked(object sender, RoutedEventArgs e)
-        {
-            foreach (object filetoadd in lbxFileNameList.Items)
-                lbxFileNameList.SelectedItems.Add(filetoadd);
         }
     }
 

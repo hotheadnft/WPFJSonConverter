@@ -5,8 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
-    Width="1455"
-    Height="800"
+    Height="700"
+    Width="1400"    
     AllowsTransparency="True"
     Background="Transparent"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
@@ -53,7 +53,7 @@
             <Border
                 Grid.Row="0"
                 Grid.Column="1"
-                Grid.ColumnSpan="4"
+                Grid.ColumnSpan="6"
                 Margin="0,10,0,3"
                 Background="Gray"
                 BorderBrush="Black"
@@ -66,7 +66,6 @@
                         Height="50"
                         Margin="5"
                         Background="Gray"
-                        Content="File Name To Display"
                         FontSize="20"
                         Foreground="White"
                         Opacity="100" />
@@ -162,7 +161,7 @@
                         Margin="10,15,20,0"
                         VerticalAlignment="Top"
                         Checked="AddButton_Checked"
-                        Content="Add"
+                        Content="Select files"
                         FontSize="18"
                         FontWeight="Bold"
                         Foreground="Black"
@@ -283,16 +282,17 @@
                             x:Name="txtblkFileContent"
                             Grid.Row="5"
                             Grid.Column="0"
-                            MinWidth="450"
-                            MinHeight="100"
+                          
+                            MaxHeight="400"
                             Margin="5,20,5,5"
-                            Background="LightBlue"
                             VerticalAlignment="Top"
                             AcceptsReturn="True"
+                            Background="LightBlue"
                             FontSize="16"
-                            HorizontalScrollBarVisibility="Auto"
-                            TextWrapping="Wrap"
-                            VerticalScrollBarVisibility="Auto" />
+                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                            TextAlignment="Left"
+                            TextWrapping="Wrap" />
                     </Grid>
                 </StackPanel>
             </Border>
@@ -335,7 +335,7 @@
                             x:Name="templatename"
                             Grid.Row="0"
                             Grid.ColumnSpan="2"
-                            MinWidth="475"
+                            MinWidth="500"
                             Margin="20,5,5,5"
                             FontFamily="Arial"
                             FontSize="22" />
@@ -343,110 +343,17 @@
                             x:Name="templateDisplay"
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
-                            MinWidth="100"
+                           
                             MinHeight="230"
-                            MaxWidth="350"
-                            FontSize="16"
-                            FontFamily="Arial"
+                            MaxWidth="250"
                             Background="LightBlue"
-                             />
+                            FontFamily="Arial"
+                            FontSize="16" />
                     </Grid>
                 </StackPanel>
             </Border>
 
-            <Border
-                x:Name="borderfileslist"
-                Grid.Row="8"
-                Grid.RowSpan="2"
-                Grid.Column="1"
-                Grid.ColumnSpan="5"
-                Margin="3,10,0,2"
-                Background="LightGray"
-                BorderBrush="Yellow"
-                BorderThickness="2"
-                CornerRadius="20"
-                Visibility="Hidden">
-                <Grid HorizontalAlignment="Stretch" Background="Transparent">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="5" />
-                    </Grid.RowDefinitions>
 
-                    <StackPanel
-                        Grid.Row="0"
-                        Grid.RowSpan="3"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="1"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Orientation="Vertical">
-
-                        <RadioButton
-                            x:Name="selectallfiles"
-                            Height="50"
-                            Margin="5,5,5,10"
-                            VerticalAlignment="Bottom"
-                            Checked="selectallfiles_Checked"
-                            Content="Select All"
-                            FontSize="18"
-                            FontWeight="Bold"
-                            Foreground="Black"
-                            IsEnabled="False"
-                            Style="{StaticResource MenuButtonTheme}" />
-                        <RadioButton
-                            x:Name="unselectallfiles"
-                            Height="50"
-                            Margin="5,5,5,10"
-                            VerticalAlignment="Bottom"
-                            Content="Un-Select All"
-                            FontSize="18"
-                            FontWeight="Bold"
-                            Foreground="Black"
-                            IsEnabled="False"
-                            Style="{StaticResource MenuButtonTheme}" />
-                        <RadioButton
-                            x:Name="addselectedfiles"
-                            Height="50"
-                            MinWidth="100"
-                            Margin="5,5,5,10"
-                            VerticalAlignment="Bottom"
-                            Content="Add selected"
-                            FontSize="18"
-                            FontWeight="Bold"
-                            Foreground="Black"
-                            IsEnabled="True"
-                            Style="{StaticResource MenuButtonTheme}" />
-
-                    </StackPanel>
-                    <ListBox
-                        x:Name="lbxFileNameList"
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="2"
-                        MinHeight="250"
-                        Background="LightGray"
-                        FontSize="16"
-                        SelectionMode="Extended"
-                        Visibility="Hidden">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    FontSize="16"
-                                    FontWeight="Bold"
-                                    Text="{Binding Name}"
-                                    Visibility="Hidden" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
-            </Border>
         </Grid>
     </Border>
 </Window>

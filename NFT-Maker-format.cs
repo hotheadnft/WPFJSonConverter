@@ -24,8 +24,10 @@ namespace WpfHashlipsJSONConverter
             trait_value = new List<string>();
         }
 
-        public void parseAttributes(string[] jsonContent, StreamWriter sw)
+        public void parseAttributes(string[] jsonContent)
         {
+            trait_type.Clear();
+            trait_value.Clear();
             string line, cleanedTrait, cleanedValue, attribute;
             attribute = null;
             string[] line_parts;
