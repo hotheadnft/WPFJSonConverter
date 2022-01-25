@@ -175,7 +175,7 @@
                         Margin="10,15,20,0"
                         VerticalAlignment="Top"
                         Checked="View_Checked"
-                        Content="View JSON before conversion"
+                        Content="View JSON"
                         FontSize="18"
                         FontWeight="Bold"
                         Foreground="Black"
