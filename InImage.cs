@@ -9,6 +9,8 @@ namespace WpfHashlipsJSONConverter
     internal class InImage
     {
         private int _id;
+        private string _collectionName;
+        private string _description;
         private string _background;
         private string _colorDepth;
         private string _dimensions;
@@ -16,26 +18,26 @@ namespace WpfHashlipsJSONConverter
         private string _twitter;
         private string _web;
         private string _name;
-        private string _description;
         private int _price;
         private int _sold;
         private int _max_Copies;
         private int _minted;
-        private string _collectionName;
+
         public int ID { get => _id; set => _id = value; }
-        public string Name { get => _name; set => _name = value; }
-        public string Background { get => _background; set => _background = value; }
-        public string ColorDepth { get => _colorDepth; set => _colorDepth = value; }
-        public string Dimensions { get => _dimensions; set => _dimensions = value; }
-        public string Dcode { get => _dcode; set => _dcode = value; }
-        public string Twitter { get => _twitter; set => _twitter = value; }
-        public string Web { get => _web; set => _web = value; }
         public string CollectionName { get => _collectionName; set => _collectionName = value; }
+        public string Description { get => _description; set => _description = value; }
+        public string Name { get => _name; set => _name = value; }
+        public string Dcode { get => _dcode; set => _dcode = value; }
         public int Minted { get => _minted; set => _minted = value; }
         public int Max_Copies { get => _max_Copies; set => _max_Copies = value; }
         public int Sold { get => _sold; set => _sold = value; }
         public int Price { get => _price; set => _price = value; }
-        public string Description { get => _description; set => _description = value; }
+        public string Background { get => _background; set => _background = value; }
+        public string ColorDepth { get => _colorDepth; set => _colorDepth = value; }
+        public string Dimensions { get => _dimensions; set => _dimensions = value; }
+   
+        public string Twitter { get => _twitter; set => _twitter = value; }
+        public string Web { get => _web; set => _web = value; }
 
         public InImage()
         {
@@ -77,7 +79,7 @@ namespace WpfHashlipsJSONConverter
                 currentCollection.Sold = 0;
                 currentCollection.Max_Copies = 50;
                 currentCollection.Minted = 0;
-
+                currentCollection.CollectionName = "InImage";
                 return currentCollection;
             }
             catch (Exception)

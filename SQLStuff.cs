@@ -30,7 +30,7 @@ namespace WpfHashlipsJSONConverter
 
         public async Task<int> OpenDB()
         {
-            string currdir = string.Empty;
+           // string currdir = string.Empty;
             int filecount = 0;
             string fnameOnly = string.Empty;
             List<String> filesProcessed = new List<String>();
@@ -44,7 +44,7 @@ namespace WpfHashlipsJSONConverter
             var result = openFile.ShowDialog();
             if (result == true)
             {
-                currdir = Directory.GetCurrentDirectory();
+               // currdir = Directory.GetCurrentDirectory();
                 filecount = openFile.FileNames.Length;
                 fileNameToDisplay.IsEnabled = true;
                 fileNameToDisplay.Content = Path.GetFileName(openFile.FileName);
@@ -62,7 +62,7 @@ namespace WpfHashlipsJSONConverter
                     _alltables.Add(DBTables);
                     _filteredTables.Add(DBTables.Name);
                 }
-                startInstructions.Content = @"Pick collection type from drop down";
+              
                 tableList.Visibility = System.Windows.Visibility.Visible;
                 tableList.ItemsSource = _alltables;
             }

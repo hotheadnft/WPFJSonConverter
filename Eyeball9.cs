@@ -36,6 +36,12 @@ namespace WpfHashlipsJSONConverter
         public int ID { get => _id; set => _id = value; }
         public string CollectionName { get => _collectionName; set => _collectionName = value; }
         public string Description { get => _description; set => _description = value; }
+        public string Name { get => _name; set => _name = value; }
+        public string Dcode { get => _dcode; set => _dcode = value; }
+        public int Minted { get => _total_minted; set => _total_minted = value; }
+        public int Max_Copies { get => _max_Copies; set => _max_Copies = value; }
+        public int Sold { get => _sold; set => _sold = value; }
+        public int Price { get => _price; set => _price = value; }
         public string Background { get => _background; set => _background = value; }
         public string Eyeball { get => _eyeball; set => _eyeball = value; }
         public string Eyecolor { get => _eyecolor; set => _eyecolor = value; }
@@ -43,15 +49,9 @@ namespace WpfHashlipsJSONConverter
         public string Shine { get => _shine; set => _shine = value; }
         public string Bottom_lid { get => _bottom_lid; set => _bottom_lid = value; }
         public string Top_lid { get => _top_lid; set => _top_lid = value; }
-        public string Dcode { get => _dcode; set => _dcode = value; }
         public string Twitter { get => _twitter; set => _twitter = value; }
         public string Web { get => _web; set => _web = value; }
-        public string Name { get => _name; set => _name = value; }
-        public int Minted { get => _total_minted; set => _total_minted = value; }
-        public int Max_Copies { get => _max_Copies; set => _max_Copies = value; }
-        public int Sold { get => _sold; set => _sold = value; }
-        public int Price { get => _price; set => _price = value; }
-
+ 
         public Eyeball9()
         {
             _background = string.Empty;
