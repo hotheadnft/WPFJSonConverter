@@ -161,7 +161,7 @@
                         Margin="10,15,20,0"
                         VerticalAlignment="Top"
                         Checked="AddButton_Checked"
-                        Content="Select files"
+                        Content="Selectand convert files"
                         FontSize="18"
                         FontWeight="Bold"
                         Foreground="Black"
@@ -249,13 +249,13 @@
                         <Label
                             x:Name="collectionName"
                             Grid.Row="1"
+                            Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            Grid.Column="0"                         
                             Margin="0,5,0,0"
                             Content="Current Collection:"
                             FontFamily="Arial"
                             FontSize="22" />
-               
+
                         <ComboBox
                             Name="tableList"
                             Grid.Row="4"
@@ -284,8 +284,8 @@
                             x:Name="txtblkFileContent"
                             Grid.Row="5"
                             Grid.Column="0"
-                            MaxHeight="400"
                             MaxWidth="430"
+                            MaxHeight="400"
                             Margin="0,0,5,5"
                             VerticalAlignment="Top"
                             AcceptsReturn="True"
@@ -293,8 +293,7 @@
                             FontSize="16"
                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
                             ScrollViewer.VerticalScrollBarVisibility="Auto"
-                            TextAlignment="Left"
-                            />
+                            TextAlignment="Left" />
                     </Grid>
                 </StackPanel>
             </Border>
