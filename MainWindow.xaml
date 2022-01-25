@@ -161,7 +161,7 @@
                         Margin="10,15,20,0"
                         VerticalAlignment="Top"
                         Checked="AddButton_Checked"
-                        Content="Selectand convert files"
+                        Content="Select and convert files"
                         FontSize="18"
                         FontWeight="Bold"
                         Foreground="Black"
