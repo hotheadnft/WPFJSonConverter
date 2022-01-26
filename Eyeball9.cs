@@ -73,12 +73,12 @@ namespace WpfHashlipsJSONConverter
             _web = "Https://wwww.hotheadsnft.com";
         }
 
-        public static Eyeball9 CollectionBuildRecord(string nftJSONFile)
+        public async Task<Eyeball9> CollectionBuildRecord(string nftJSONFile)
         {
             try
             {
                 Eyeball9 currentCollection = new();
-                var NftMakerToConvert = File.ReadAllLines(nftJSONFile);
+                var NftMakerToConvert = await File.ReadAllLinesAsync(nftJSONFile);
                 currentCollection.ID = 0;
                 currentCollection.Name = PrepJSONforDB(NftMakerToConvert[4]);
                 currentCollection.Description = PrepJSONforDB(NftMakerToConvert[7]);
@@ -189,7 +189,7 @@ namespace WpfHashlipsJSONConverter
                     trans.Rollback();
                     sw.Stop();
                     timetaken = sw.ElapsedMilliseconds;
-                    Debug.WriteLine($"{ timetaken } ");
+                  //  ////Debug.WriteLine($"{ timetaken } ");
                     return rows;
                 }
                 else
@@ -198,7 +198,7 @@ namespace WpfHashlipsJSONConverter
                     trans.Rollback();
                     sw.Stop();
                     timetaken = sw.ElapsedMilliseconds;
-                    Debug.WriteLine($"{ timetaken } ");
+                    ////Debug.WriteLine($"{ timetaken } ");
                     return rows;
                 }
             }
@@ -216,7 +216,7 @@ namespace WpfHashlipsJSONConverter
                     trans.Rollback();
                     sw.Stop();
                     timetaken = sw.ElapsedMilliseconds;
-                    Debug.WriteLine($"{ timetaken } ");
+                    ////Debug.WriteLine($"{ timetaken } ");
                     return rows;
                 }
                 else
@@ -225,7 +225,7 @@ namespace WpfHashlipsJSONConverter
                     trans.Rollback();
                     sw.Stop();
                     timetaken = sw.ElapsedMilliseconds;
-                    Debug.WriteLine($"{ timetaken } ");
+                    ////Debug.WriteLine($"{ timetaken } ");
                     return rows;
                 }
             }
@@ -235,18 +235,18 @@ namespace WpfHashlipsJSONConverter
                 trans.Rollback();
                 sw.Stop();
                 timetaken = sw.ElapsedMilliseconds;
-                Debug.WriteLine($"{ timetaken } ");
+                ////Debug.WriteLine($"{ timetaken } ");
                 return rows;
             }
             //  MessageBox.Show("Successfully added one record");
             sw.Stop();
             timetaken = sw.ElapsedMilliseconds;
-            Debug.WriteLine($"{ timetaken } ");
+            ////Debug.WriteLine($"{ timetaken } ");
             connection.Close();
             return rows;
         }
 
-        public static int AddRowFromList(List<string> nftsToAdd, string SelectedCollection, string pathToDB, List<string> namesAdded)
+        public async Task<int> AddRowFromList(List<string> nftsToAdd, string SelectedCollection, string pathToDB, List<string> namesAdded)
         {
             Stopwatch sw = new();
             sw.Start();
@@ -268,7 +268,8 @@ namespace WpfHashlipsJSONConverter
                 var trans = connection.BeginTransaction();
                 SQLiteCommand command = new(addCollection, connection);
 
-                Eyeball9 eyeballToAdd = Eyeball9.CollectionBuildRecord(nftsToAdd[i]);
+                Eyeball9 eyeballToAdd =new();
+                await eyeballToAdd.CollectionBuildRecord(nftsToAdd[i]);
 
                 price = eyeballToAdd.Price;
                 description = eyeballToAdd.Description;
@@ -312,7 +313,7 @@ namespace WpfHashlipsJSONConverter
                 {
                     namesAdded.Add(Path.GetFileName(nftsToAdd[i]));
                     //rows +=
-                    rows += command.ExecuteNonQuery();
+                    rows += await command.ExecuteNonQueryAsync();
                     trans.Commit();
                 }
                 catch (SQLiteException sqc)
@@ -338,7 +339,7 @@ namespace WpfHashlipsJSONConverter
             }
             sw.Stop();
             long timetaken = sw.ElapsedMilliseconds;
-            Debug.WriteLine($"{ timetaken } ");
+            ////Debug.WriteLine($"{ timetaken } ");
             return rows;
         }
 
@@ -364,7 +365,8 @@ namespace WpfHashlipsJSONConverter
                 var trans = connection.BeginTransaction();
                 SQLiteCommand command = new(addCollection, connection);
 
-                Eyeball9 eyeballToAdd = Eyeball9.CollectionBuildRecord(nftsToAdd[i]);
+                Eyeball9 eyeballToAdd = new();
+                await eyeballToAdd.CollectionBuildRecord(nftsToAdd[i]);
 
                 price = eyeballToAdd.Price;
                 description = eyeballToAdd.Description;
@@ -436,7 +438,7 @@ namespace WpfHashlipsJSONConverter
 
             sw.Stop();
             long timetaken = sw.ElapsedMilliseconds;
-            Debug.WriteLine($"{ timetaken } ");
+            ////Debug.WriteLine($"{ timetaken } ");
             return rows;
         }
     }

@@ -289,8 +289,9 @@
                             Margin="0,0,5,5"
                             VerticalAlignment="Top"
                             AcceptsReturn="True"
-                            Background="LightBlue"
+                            Background="LightGray"
                             FontSize="16"
+                            FontWeight="Bold"
                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
                             ScrollViewer.VerticalScrollBarVisibility="Auto"
                             TextAlignment="Left" />
@@ -346,8 +347,9 @@
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
                             MinHeight="230"
-                            Background="LightBlue"
+                            Background="LightGray"
                             FontFamily="Arial"
+                            FontWeight="Bold"
                             FontSize="16" />
                     </Grid>
                 </StackPanel>

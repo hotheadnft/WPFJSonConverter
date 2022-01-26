@@ -107,10 +107,13 @@ namespace WpfHashlipsJSONConverter
 
         private void ButtonExitClick(object sender, RoutedEventArgs e)
         {
+            //Debug.WriteLine($"Exit directory is: {Directory.GetCurrentDirectory()}");
+            if(FullPathToDB != null)
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(FullPathToDB));
             System.Windows.Application.Current.Shutdown();
         }
 
-        private void AddButton_Checked(object sender, RoutedEventArgs e)
+        private async void AddButton_Checked(object sender, RoutedEventArgs e)
         {
             add.IsChecked = false;
             int fileCount;
@@ -124,33 +127,38 @@ namespace WpfHashlipsJSONConverter
             var result = openFile.ShowDialog();
             if (result == true)
             {
-                fileCount = openFile.FileNames.Length;
+                txtblkFileContent.Visibility = Visibility.Visible;
+                fileCount = openFile.FileNames.Length;     
+                txtblkFileContent.Text = "Converting...";
 
                 StreamWriter sw;
-                string[] path_parts;
+                string?[] path_parts;
                 string[] content = { "" };
                 string imagePath, imageFileName;
                 string exeDir = Directory.GetCurrentDirectory();
                 //read projectmetadata.json to use as template
-                var projectTemplate = File.ReadAllLines($"{exeDir}\\projectmetadata.json");
+                var projectTemplate = await File.ReadAllLinesAsync($"{exeDir}\\projectmetadata.json");
                 List<string> filestocheck = new List<string>();
-                string jsonFolder = string.Empty;
+                string? jsonFolder = string.Empty;
                 string[] possibleFilesProcessed = { "" };
                 string fnameOnly = string.Empty;
                 string rows = string.Empty;
 
                 StringBuilder pathToCopyJSONFrom = new StringBuilder(); //folder structure is pathToCopyJSONFrom with
-                                                                        //orig,images and folder with json files as sub-folders
+                                          
+                //orig,images and folder with json files as sub-folders
 
                 jsonFolder = Path.GetDirectoryName(openFile.FileNames[0]);
-                path_parts = jsonFolder.Split('\\');
-
-                pathToCopyJSONFrom.Append(path_parts[0] + "\\");
-                for (int i = 1; i < path_parts.Length - 1; i++)
+                if (jsonFolder != null)
                 {
-                    pathToCopyJSONFrom.Append(path_parts[i] + "\\");
-                }
+                    path_parts = jsonFolder.Split('\\');
 
+                    pathToCopyJSONFrom.Append(path_parts[0] + "\\");
+                    for (int i = 1; i < path_parts.Length - 1; i++)
+                    {
+                        pathToCopyJSONFrom.Append(path_parts[i] + "\\");
+                    }
+                }
                 Directory.SetCurrentDirectory($"{pathToCopyJSONFrom}");
                 Directory.CreateDirectory("orig");
 
@@ -178,14 +186,13 @@ namespace WpfHashlipsJSONConverter
                         File.Copy(filesProcessed[i], $"{pathToCopyJSONFrom}\\orig\\" + fnameOnly);
 
                     //read first json file
-                    var NftMakerToConvert = File.ReadAllLines(filesProcessed[i]);
+                    var NftMakerToConvert = await File.ReadAllLinesAsync(filesProcessed[i]);
 #if !DEBUG
                     //delete and create new json file starting with project template
                     File.Delete(filesProcessed[i]);
 #endif
                     StringBuilder sbJsonRecord = new StringBuilder();
                     sw = File.CreateText(filesProcessed[i]);
-                    Debug.WriteLine($"Created file {filesProcessed[i]}");
                     //build attributes in two lists as members of record
                     record.parseAttributes(NftMakerToConvert);
                     //write out top half of template
@@ -193,44 +200,44 @@ namespace WpfHashlipsJSONConverter
                     {
                         if (template == 4)
                         {
-                           // Debug.WriteLine($"        { record.name}");
-                            sw.WriteLine($"        { record.name}");
+                           // ////Debug.WriteLine($"        { record.name}");
+                            await sw.WriteLineAsync($"        { record.name}");
                             // template++;
                             continue;
                         }
                         //replace description in line 8
                         if (template == 7)
                         {
-                          //  Debug.WriteLine($"          { record.description},");
-                            sw.WriteLine($"          { record.description},");
+                          //  ////Debug.WriteLine($"          { record.description},");
+                            await sw.WriteLineAsync($"          { record.description},");
                             // template++;
                             continue;
                         }
                         if (template == 10)
                         {
-                           // Debug.WriteLine($"          { record.name}");
-                            sw.WriteLine($"          { record.name}");
+                           // ////Debug.WriteLine($"          { record.name}");
+                            await sw.WriteLineAsync($"          { record.name}");
                             // template++;
                             continue;
                         }
-                      // Debug.WriteLine(projectTemplate[template]);
-                        sw.Write(projectTemplate[template] + Environment.NewLine);
+                      // ////Debug.WriteLine(projectTemplate[template]);
+                       await sw.WriteAsync(projectTemplate[template] + Environment.NewLine);
                     }
                     //walk each list and add trait_type and value as
                     for (int index = 0; index < record.trait_type.Count; index++)
                     {
                         sbJsonRecord.Append("		 ");
                         sbJsonRecord.Append(record.trait_type[index]);
-                        sw.Write(sbJsonRecord);
-                        Debug.Write(sbJsonRecord);
+                       await sw.WriteAsync(sbJsonRecord);
+                        //Debug.Write(sbJsonRecord);
                         sbJsonRecord.Clear();
                     }
 
                     sbJsonRecord.Append("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
-                  //  Debug.Write(sbJsonRecord.ToString());
-
-                    //Debug.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
-                    sw.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
+                  //  //Debug.Write(sbJsonRecord.ToString());
+                 
+                    //////Debug.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
+                    await sw.WriteLineAsync("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
                     sbJsonRecord.Clear();
                     sw.Close();
                 }
@@ -257,7 +264,7 @@ namespace WpfHashlipsJSONConverter
                 }
                 catch (Exception er)
                 {
-                    Debug.WriteLine(er.Message);
+                    ////Debug.WriteLine(er.Message);
                 }
 
                 //filestocheck = FileHelper.GetFilesRecursive("images");
@@ -266,6 +273,7 @@ namespace WpfHashlipsJSONConverter
                 //       if (!File.Exists("orig\\" + path_parts[1]))
                 //           File.Copy(filestocheck[i], $"{pathToCopyJSONFrom}" + fnameOnly);
                 // }
+                txtblkFileContent.Text = "Finished!";
             }
         }
 
@@ -280,7 +288,7 @@ namespace WpfHashlipsJSONConverter
             collectionName.IsEnabled = true;
             SelectedCollection = tables.Name;
 
-            Debug.WriteLine(SelectedCollection + " is the selected collection" + Environment.NewLine);
+            ////Debug.WriteLine(SelectedCollection + " is the selected collection" + Environment.NewLine);
 
             add.IsEnabled = true;
 
@@ -295,7 +303,7 @@ namespace WpfHashlipsJSONConverter
             view.IsEnabled = true;
         }
 
-        private void View_Checked(object sender, RoutedEventArgs e)
+        private async void View_Checked(object sender, RoutedEventArgs e)
         {
             string[] jsonFiles;
 
@@ -305,7 +313,8 @@ namespace WpfHashlipsJSONConverter
             {
                 foreach (string jsonFile in jsonFiles)
                     filesProcessed.Add(jsonFile);
-                jsonText = File.ReadAllText(filesProcessed[0].ToString());
+              
+                jsonText = await File.ReadAllTextAsync(filesProcessed[0].ToString());
 
 
                 Application.Current.MainWindow = this;
