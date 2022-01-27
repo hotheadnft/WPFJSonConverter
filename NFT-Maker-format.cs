@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace WpfHashlipsJSONConverter
 {
@@ -28,8 +29,8 @@ namespace WpfHashlipsJSONConverter
         {
             trait_type.Clear();
             trait_value.Clear();
-            string line, cleanedTrait, cleanedValue, attribute;
-            attribute = null;
+            string line, cleanedTrait, cleanedValue;
+            StringBuilder attribute = new StringBuilder();
             string[] line_parts;
             //read array until attributes section
             int i = 0;
@@ -68,7 +69,8 @@ namespace WpfHashlipsJSONConverter
                     i++;
                     line = jsonContent[i];
                     endOfAttributes = line.IndexOf("  ],");
-                    attribute = cleanedTrait + cleanedValue;
+                    attribute.Clear();
+                    attribute.Append(cleanedTrait + cleanedValue);
                     if (endOfAttributes != 0)
                     {
 
@@ -90,7 +92,7 @@ namespace WpfHashlipsJSONConverter
             }
             //add dna, twitter and web addresses as traits
         
-            attribute = dna.Trim();
+            attribute.Append(dna.Trim());
             trait_type.Add(" "+attribute + Environment.NewLine);
 
             trait_type.Add(" \"Twitter\":\"twitter.com/hotheadnft\"" + "," + Environment.NewLine);

@@ -274,6 +274,7 @@ namespace WpfHashlipsJSONConverter
                 //           File.Copy(filestocheck[i], $"{pathToCopyJSONFrom}" + fnameOnly);
                 // }
                 txtblkFileContent.Text = "Finished!";
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(FullPathToDB));
             }
         }
 
@@ -324,6 +325,7 @@ namespace WpfHashlipsJSONConverter
 
                 txtblkFileContent.Text = jsonText;
             }
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(FullPathToDB));
         }
 
         private string[] GetListOfJsonFiles()
