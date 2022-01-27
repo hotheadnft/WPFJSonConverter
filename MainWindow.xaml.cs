@@ -264,7 +264,7 @@ namespace WpfHashlipsJSONConverter
                 }
                 catch (Exception er)
                 {
-                    ////Debug.WriteLine(er.Message);
+                    MessageBox.Show(er.Message);
                 }
 
                 //filestocheck = FileHelper.GetFilesRecursive("images");

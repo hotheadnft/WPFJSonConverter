@@ -23,11 +23,11 @@
     </Window.Resources>
 
     <Border
-        Background="Black"
-        BorderBrush="Transparent"
+        Background="Teal"
+        BorderBrush="Teal"
         BorderThickness="3"
         CornerRadius="20">
-        <Grid Background="Teal">
+        <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="auto" />

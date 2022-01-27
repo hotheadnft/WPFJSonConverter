@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace WpfHashlipsJSONConverter
@@ -58,12 +59,12 @@ namespace WpfHashlipsJSONConverter
             _web = "Https://wwww.hotheadsnft.com";
         }
 
-        public static InImage CollectionBuildRecord(string nftJSONFile)
+        public async Task<InImage> CollectionBuildRecord(string nftJSONFile)
         {
             try
             {
                 InImage currentCollection = new();
-                var NftMakerToConvert = File.ReadAllLines(nftJSONFile);
+                var NftMakerToConvert = await File.ReadAllLinesAsync(nftJSONFile);
 
                 currentCollection.ID = 0;
                 currentCollection.Name = PrepJSONforDB(NftMakerToConvert[4]);
@@ -82,13 +83,12 @@ namespace WpfHashlipsJSONConverter
                 currentCollection.CollectionName = "InImage";
                 return currentCollection;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                MessageBox.Show(e.Message);
                 throw;
             }
-            finally
-            {
-            }
+            
         }
 
         private static string PrepJSONforDB(string fieldToClean)
@@ -103,105 +103,7 @@ namespace WpfHashlipsJSONConverter
             return jsonBuffer;
         }
 
-        public static int AddRow(InImage nftToAdd, string selectedcollection, string pathToDB)
-        {
-            string background, collectionname, colorDepth, dimensions, dcode, description, twitter, web, name;
-            int total_minted = 0, rows = 0;
-            int price, max_copies = 0, sold;
-            colorDepth = nftToAdd.ColorDepth;
-            background = nftToAdd.Background;
-            dimensions = nftToAdd.Dimensions;
-            collectionname = selectedcollection;
-            name = nftToAdd.Name;
-            dcode = nftToAdd.Dcode;
-            twitter = nftToAdd.Twitter;
-            web = nftToAdd.Web;
-
-            price = nftToAdd.Price;
-            description = nftToAdd.Description;
-            sold = 0;
-            string currdir = Directory.GetCurrentDirectory();
-            Directory.SetCurrentDirectory(pathToDB);
-            string dbfile = "URI=file:NFTDB.db";
-            SQLiteConnection connection = new(dbfile);
-            connection.Open();
-            Directory.SetCurrentDirectory(currdir);
-
-            string addCollection = $"insert into {selectedcollection}(id,name,description,colorDepth,dimensions,background,total_minted,price,sold,max_copies,dcode,twitter,web,collectionname)" +
-                "VALUES (@id,@name,@description,@colorDepth,@dimensions,@background,@total_minted,@price,@sold,@max_copies,@dcode,@twitter,@web,@collectionname);";
-            var trans = connection.BeginTransaction();
-            SQLiteCommand command = new(addCollection, connection);
-
-            command.Parameters.AddWithValue("@id", null);
-            command.Parameters.AddWithValue("@name", name);
-            command.Parameters.AddWithValue("@description", description);
-            command.Parameters.AddWithValue("@colorDepth", colorDepth);
-            command.Parameters.AddWithValue("@dimensions", dimensions);
-            command.Parameters.AddWithValue("@background", background);
-
-            command.Parameters.AddWithValue("@dcode", dcode);
-            command.Parameters.AddWithValue("@twitter", twitter);
-            command.Parameters.AddWithValue("@web", web);
-            command.Parameters.AddWithValue("@price", price);
-
-            command.Parameters.AddWithValue("@sold", sold);
-            command.Parameters.AddWithValue("@max_copies", max_copies);
-            command.Parameters.AddWithValue("@total_minted", total_minted);
-            command.Parameters.AddWithValue("@collectionname", collectionname);
-            try
-            {
-                rows = command.ExecuteNonQuery();
-            }
-            catch (SQLiteException sqc)
-            {
-                string ecode = sqc.ErrorCode.ToString();
-                string rcode = sqc.ResultCode.ToString();
-                if ((rcode.CompareTo("Constraint") == 0) && (ecode.CompareTo("19") == 0))
-                {
-                    MessageBox.Show($"Attempt to add duplicate dna.");
-                    trans.Rollback();
-                    return rows;
-                }
-                else
-                {
-                    MessageBox.Show(sqc.Message);
-                    trans.Rollback();
-                    return rows;
-                }
-            }
-            try
-            {
-                trans.Commit();
-            }
-            catch (SQLiteException sqc)
-            {
-                string ecode = sqc.ErrorCode.ToString();
-                string rcode = sqc.ResultCode.ToString();
-                if ((rcode.CompareTo("Constraint") == 0) && (ecode.CompareTo("19") == 0))
-                {
-                    MessageBox.Show($"Attempt to add duplicate dna.");
-                    trans.Rollback();
-                    return rows;
-                }
-                else
-                {
-                    MessageBox.Show(sqc.Message);
-                    trans.Rollback();
-                    return rows;
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                trans.Rollback();
-                return rows;
-            }
-            MessageBox.Show("Successfully added one record");
-            connection.Close();
-            return rows;
-        }
-
-        public static int AddRowFromList(List<string> nftsToAdd, string selectedcollection, string pathToDB, List<string> namesAdded)
+        public static async Task<int> AddRowFromListAsync(List<string> nftsToAdd, string selectedcollection, string pathToDB, List<string> namesAdded)
         {
             string background, collectionname, colorDepth, dimensions, dcode, description, twitter, web, name;
             int total_minted = 0;
@@ -224,7 +126,8 @@ namespace WpfHashlipsJSONConverter
 
                 command = new SQLiteCommand(addCollection, connection);
 
-                InImage inImageToAdd = InImage.CollectionBuildRecord(nftsToAdd[i]);
+                InImage inImageToAdd = new();
+              await inImageToAdd.CollectionBuildRecord(nftsToAdd[i]);
                 colorDepth = inImageToAdd.ColorDepth;
                 background = inImageToAdd.Background;
                 dimensions = inImageToAdd.Dimensions;
@@ -257,7 +160,7 @@ namespace WpfHashlipsJSONConverter
                 try
                 {
                     namesAdded.Add(Path.GetFileName(nftsToAdd[i]));
-                    rows += command.ExecuteNonQuery();
+                    rows += await command.ExecuteNonQueryAsync();
                     trans.Commit();
                 }
                 catch (SQLiteException sqc)
