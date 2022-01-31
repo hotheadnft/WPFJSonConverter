@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
@@ -7,7 +8,7 @@ using System.Windows;
 
 namespace WpfHashlipsJSONConverter
 {
-    internal class InImage
+    internal class InImage : IImageCollections
     {
         private int _id;
         private string _collectionName;
@@ -59,7 +60,7 @@ namespace WpfHashlipsJSONConverter
             _web = "Https://wwww.hotheadsnft.com";
         }
 
-        public async Task<InImage> CollectionBuildRecord(string nftJSONFile)
+        public async Task<object> CollectionBuildRecord(string nftJSONFile)
         {
             try
             {
@@ -91,7 +92,7 @@ namespace WpfHashlipsJSONConverter
             
         }
 
-        private static string PrepJSONforDB(string fieldToClean)
+        public string PrepJSONforDB(string fieldToClean)
         {
             string jsonBuffer;
             string[] json_parts;
@@ -103,7 +104,7 @@ namespace WpfHashlipsJSONConverter
             return jsonBuffer;
         }
 
-        public static async Task<int> AddRowFromListAsync(List<string> nftsToAdd, string selectedcollection, string pathToDB, List<string> namesAdded)
+        public async Task<object> AddRowFromListAsync(List<string> nftsToAdd, string selectedcollection, string pathToDB, List<string> namesAdded)
         {
             string background, collectionname, colorDepth, dimensions, dcode, description, twitter, web, name;
             int total_minted = 0;

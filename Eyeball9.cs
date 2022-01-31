@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace WpfHashlipsJSONConverter
 {
-    internal class Eyeball9
+  public class Eyeball9 : IImageCollections
     {
         private int _id;
         private string _description;
@@ -67,13 +67,12 @@ namespace WpfHashlipsJSONConverter
             _id = 0;
             _name = string.Empty;
             _max_Copies = 0;
-            _sold = 0;
-            _twitter = "https://twitter.com/hotheadnft.com";
+            _sold = 0;       
             _total_minted = 0;
-            _web = "Https://wwww.hotheadsnft.com";
+            
         }
 
-        public async Task<Eyeball9> CollectionBuildRecord(string nftJSONFile)
+        public async Task<object> CollectionBuildRecord(string nftJSONFile)
         {
             try
             {
@@ -105,8 +104,7 @@ namespace WpfHashlipsJSONConverter
                 throw;
             }
         }
-
-        private static string PrepJSONforDB(string fieldToClean)
+        public string PrepJSONforDB(string fieldToClean)
         {
             string jsonBuffer = fieldToClean;
             string[] json_parts;
@@ -120,133 +118,7 @@ namespace WpfHashlipsJSONConverter
             }
             return jsonBuffer;
         }
-
-        public static int AddRow(Eyeball9 nftToAdd, string SelectedCollection, string pathToDB)
-        {
-            Stopwatch sw = new();
-            sw.Start();
-            long timetaken;
-            string background, eyeball, eyecolor, iris, shine, bottom_lid, top_lid, dcode, collectionname, twitter, web, name;
-            int price = nftToAdd.Price, rows = 0;
-            string description;
-            description = nftToAdd.Description;
-            int sold, max_copies, total_minted;
-            sold = max_copies = total_minted = 0;
-            dcode = nftToAdd.Dcode;
-            twitter = nftToAdd.Twitter;
-            web = nftToAdd.Web;
-            eyeball = nftToAdd.Eyeball;
-            background = nftToAdd.Background;
-            eyecolor = nftToAdd.Eyecolor;
-            iris = nftToAdd.Iris;
-            shine = nftToAdd.Shine;
-            bottom_lid = nftToAdd.Bottom_lid;
-            top_lid = nftToAdd.Top_lid;
-            collectionname = SelectedCollection;
-            name = nftToAdd.Name;
-            string currdir = Directory.GetCurrentDirectory();
-            Directory.SetCurrentDirectory(pathToDB);
-            string dbfile = "URI=file:NFTDB.db";
-            using SQLiteConnection connection = new(dbfile);
-            connection.Open();
-            Directory.SetCurrentDirectory(currdir);
-            var trans = connection.BeginTransaction();
-            string addCollection = "insert into Eyeball9(id,name,description,eyeball,eyecolor,iris,shine,bottom_lid,top_lid,background,dcode,twitter,web,price,sold,max_copies,total_minted,collectionname)" +
-                         "VALUES (@id,@name,@description,@eyeball,@eyecolor,@iris,@shine,@bottom_lid,@top_lid,@background,@dcode,@twitter,@web,@price,@sold,@max_copies,@total_minted,@collectionname);";
-
-            SQLiteCommand command = new(addCollection, connection);
-
-            command.Parameters.AddWithValue("@id", null);
-            command.Parameters.AddWithValue("@name", name);
-            command.Parameters.AddWithValue("@description", description);
-            command.Parameters.AddWithValue("@eyeball", eyeball);
-            command.Parameters.AddWithValue("@eyecolor", eyecolor);
-            command.Parameters.AddWithValue("@iris", iris);
-            command.Parameters.AddWithValue("@shine", shine);
-            command.Parameters.AddWithValue("@bottom_lid", bottom_lid);
-            command.Parameters.AddWithValue("@top_lid", top_lid);
-            command.Parameters.AddWithValue("@background", background);
-            command.Parameters.AddWithValue("@dcode", dcode);
-            command.Parameters.AddWithValue("@twitter", twitter);
-            command.Parameters.AddWithValue("@web", web);
-
-            command.Parameters.AddWithValue("@price", price);
-            command.Parameters.AddWithValue("@sold", sold);
-            command.Parameters.AddWithValue("@max_copies", max_copies);
-            command.Parameters.AddWithValue("@total_minted", total_minted);
-            command.Parameters.AddWithValue("@collectionname", collectionname);
-            try
-            {
-                rows = command.ExecuteNonQuery();
-            }
-            catch (SQLiteException sqc)
-            {
-                string ecode = sqc.ErrorCode.ToString();
-                string rcode = sqc.ResultCode.ToString();
-                if ((rcode.CompareTo("Constraint") == 0) && (ecode.CompareTo("19") == 0))
-                {
-                    MessageBox.Show($"Attempt to add duplicate dna.");
-                    trans.Rollback();
-                    sw.Stop();
-                    timetaken = sw.ElapsedMilliseconds;
-                  //  ////Debug.WriteLine($"{ timetaken } ");
-                    return rows;
-                }
-                else
-                {
-                    MessageBox.Show(sqc.Message);
-                    trans.Rollback();
-                    sw.Stop();
-                    timetaken = sw.ElapsedMilliseconds;
-                    ////Debug.WriteLine($"{ timetaken } ");
-                    return rows;
-                }
-            }
-            try
-            {
-                trans.Commit();
-            }
-            catch (SQLiteException sqc)
-            {
-                string ecode = sqc.ErrorCode.ToString();
-                string rcode = sqc.ResultCode.ToString();
-                if ((rcode.CompareTo("Constraint") == 0) && (ecode.CompareTo("19") == 0))
-                {
-                    MessageBox.Show($"Attempt to add duplicate dna.");
-                    trans.Rollback();
-                    sw.Stop();
-                    timetaken = sw.ElapsedMilliseconds;
-                    ////Debug.WriteLine($"{ timetaken } ");
-                    return rows;
-                }
-                else
-                {
-                    MessageBox.Show(sqc.Message);
-                    trans.Rollback();
-                    sw.Stop();
-                    timetaken = sw.ElapsedMilliseconds;
-                    ////Debug.WriteLine($"{ timetaken } ");
-                    return rows;
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                trans.Rollback();
-                sw.Stop();
-                timetaken = sw.ElapsedMilliseconds;
-                ////Debug.WriteLine($"{ timetaken } ");
-                return rows;
-            }
-            //  MessageBox.Show("Successfully added one record");
-            sw.Stop();
-            timetaken = sw.ElapsedMilliseconds;
-            ////Debug.WriteLine($"{ timetaken } ");
-            connection.Close();
-            return rows;
-        }
-
-        public static async Task<int> AddRowFromListAsync(List<string> nftsToAdd, string SelectedCollection, string pathToDB, List<string> namesAdded)
+        public async Task<object> AddRowFromListAsync(List<string> nftsToAdd, string SelectedCollection, string pathToDB, List<string> namesAdded)
         {
             Stopwatch sw = new();
             sw.Start();
@@ -344,5 +216,7 @@ namespace WpfHashlipsJSONConverter
             ////Debug.WriteLine($"{ timetaken } ");
             return rows;
         }
+
+     
     }
 }

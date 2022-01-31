@@ -14,13 +14,13 @@ namespace WpfHashlipsJSONConverter
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private string _selectedCollection;
-        private string _fullPathToJSON;
-        private string _fullPathToDB;
+        public string _selectedCollection;
+        public string _fullPathToJSON;
+        public string _fullPathToDB;
         public List<String> filesProcessed = new();
-        private readonly List<Tables> _alltables = new();
+        public readonly List<Tables> _alltables = new();
         public List<JSONFiles> jsonDisplayList = new();
-        private readonly List<string> _filteredTables = new();
+        public readonly List<string> _filteredTables = new();
         public string jsonText;
 
         public event PropertyChangedEventHandler WhichPropertyChanged;
@@ -58,7 +58,7 @@ namespace WpfHashlipsJSONConverter
                     _selectedCollection = value;
                     NotifyPropertyChanged(_selectedCollection);
                     collectionName.Content = $"Current Collection: {value}";                   
-                    showJsonTemplate();
+                    ShowJsonTemplate();
                 }
             }
         }
@@ -299,7 +299,8 @@ namespace WpfHashlipsJSONConverter
 
         private async void Open_Checked(object sender, RoutedEventArgs e)
         {
-            await OpenDB();
+            sqlstuff sqlJunk = new();
+            await sqlJunk.OpenDB();
             add.IsEnabled = true;
             view.IsEnabled = true;
         }
