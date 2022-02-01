@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -42,6 +44,7 @@ namespace WpfHashlipsJSONConverter
                 {
                     _fullPathToDB = value;
                     NotifyPropertyChanged(_fullPathToDB);
+                    fileNameToDisplay.Content = _fullPathToDB;                   
                 }
             }
         }
@@ -299,8 +302,7 @@ namespace WpfHashlipsJSONConverter
 
         private async void Open_Checked(object sender, RoutedEventArgs e)
         {
-            sqlstuff sqlJunk = new();
-            await sqlJunk.OpenDB();
+            OpenDB();
             add.IsEnabled = true;
             view.IsEnabled = true;
         }
@@ -328,7 +330,63 @@ namespace WpfHashlipsJSONConverter
             }
             Directory.SetCurrentDirectory(Path.GetDirectoryName(FullPathToDB));
         }
+        public List<string> GetTables(string fullPathDB)
+        {
+            using SQLiteConnection connection = new($"Data Source={fullPathDB}");
+            connection.Open();
 
+            //  _fullPathToDB = connection.FileName;
+            //  FullPathToDB = fullPathDB;
+            List<string> rtables = new();
+            DataTable dt = connection.GetSchema("Tables");
+            foreach (DataRow row in dt.Rows)
+            {
+                string tablename = (string)row[2];
+                rtables.Add(tablename);
+            }
+
+            return rtables;
+        }
+
+        public void OpenDB()
+        {
+            // string currdir = string.Empty;
+            int filecount = 0;
+            string fnameOnly = string.Empty;
+            List<String> filesProcessed = new List<String>();
+
+            Microsoft.Win32.OpenFileDialog openFile = new()
+            {
+                Filter = "Database|*.DB",
+                Title = "Select file to open",
+                Multiselect = true
+            };
+            var result = openFile.ShowDialog();
+            if (result == true)
+            {
+                // currdir = Directory.GetCurrentDirectory();
+                filecount = openFile.FileNames.Length;
+                fileNameToDisplay.IsEnabled = true;
+                fileNameToDisplay.Content = Path.GetFileName(openFile.FileName);
+                fileNameToDisplay.Visibility = System.Windows.Visibility.Visible;
+
+                FullPathToDB = openFile.FileName;
+                filesProcessed = GetTables(FullPathToDB);
+
+                foreach (string table in filesProcessed)
+                {
+                    if (table.CompareTo("sqlite_sequence") == 0)
+                        continue;
+                    Tables DBTables = new();
+                    DBTables.Name = table;
+                    _alltables.Add(DBTables);
+                    _filteredTables.Add(DBTables.Name);
+                }
+
+                tableList.Visibility = System.Windows.Visibility.Visible;
+                tableList.ItemsSource = _alltables;
+            }
+        }
         private string[] GetListOfJsonFiles()
         {
             view.IsChecked = false;
