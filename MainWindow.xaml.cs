@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -16,14 +16,28 @@ namespace WpfHashlipsJSONConverter
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        public string _selectedCollection;
-        public string _fullPathToJSON;
-        public string _fullPathToDB;
-        public List<String> filesProcessed = new();
-        public readonly List<Tables> _alltables = new();
-        public List<JSONFiles> jsonDisplayList = new();
-        public readonly List<string> _filteredTables = new();
-        public string jsonText;
+        private string _selectedCollection;
+        private string _fullPathToJSON;
+        private string _fullPathToDB;
+        private List<String> filesProcessed = new();
+        private readonly List<Tables> _alltables = new();
+        private List<JSONFiles> jsonDisplayList = new();
+        private readonly List<string> _filteredTables = new();
+        private string _jsonText;
+
+        public string jsonText
+        {
+            get => _jsonText;
+            set
+            {
+                if (value != null)
+                {
+                    _jsonText = value;
+                    NotifyPropertyChanged(_jsonText);
+                    txtblkFileContent.Text = _jsonText;
+                }
+            }
+        }
 
         public event PropertyChangedEventHandler WhichPropertyChanged;
 
@@ -44,7 +58,7 @@ namespace WpfHashlipsJSONConverter
                 {
                     _fullPathToDB = value;
                     NotifyPropertyChanged(_fullPathToDB);
-                    fileNameToDisplay.Content = _fullPathToDB;                   
+                    fileNameToDisplay.Content = $"Eth to ADA JSON Convertor             {Path.GetFileName(_fullPathToDB)}";
                 }
             }
         }
@@ -60,7 +74,7 @@ namespace WpfHashlipsJSONConverter
                 {
                     _selectedCollection = value;
                     NotifyPropertyChanged(_selectedCollection);
-                    collectionName.Content = $"Current Collection: {value}";                   
+                    collectionName.Content = $"Current Collection: {value}";
                     ShowJsonTemplate();
                 }
             }
@@ -111,7 +125,7 @@ namespace WpfHashlipsJSONConverter
         private void ButtonExitClick(object sender, RoutedEventArgs e)
         {
             //Debug.WriteLine($"Exit directory is: {Directory.GetCurrentDirectory()}");
-            if(FullPathToDB != null)
+            if (FullPathToDB != null)
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(FullPathToDB));
             System.Windows.Application.Current.Shutdown();
         }
@@ -131,7 +145,7 @@ namespace WpfHashlipsJSONConverter
             if (result == true)
             {
                 txtblkFileContent.Visibility = Visibility.Visible;
-                fileCount = openFile.FileNames.Length;     
+                fileCount = openFile.FileNames.Length;
                 txtblkFileContent.Text = "Converting...";
 
                 StreamWriter sw;
@@ -148,7 +162,7 @@ namespace WpfHashlipsJSONConverter
                 string rows = string.Empty;
 
                 StringBuilder pathToCopyJSONFrom = new StringBuilder(); //folder structure is pathToCopyJSONFrom with
-                                          
+
                 //orig,images and folder with json files as sub-folders
 
                 jsonFolder = Path.GetDirectoryName(openFile.FileNames[0]);
@@ -203,7 +217,7 @@ namespace WpfHashlipsJSONConverter
                     {
                         if (template == 4)
                         {
-                           // ////Debug.WriteLine($"        { record.name}");
+                            // ////Debug.WriteLine($"        { record.name}");
                             await sw.WriteLineAsync($"        { record.name}");
                             // template++;
                             continue;
@@ -211,34 +225,34 @@ namespace WpfHashlipsJSONConverter
                         //replace description in line 8
                         if (template == 7)
                         {
-                          //  ////Debug.WriteLine($"          { record.description},");
+                            //  ////Debug.WriteLine($"          { record.description},");
                             await sw.WriteLineAsync($"          { record.description},");
                             // template++;
                             continue;
                         }
                         if (template == 10)
                         {
-                           // ////Debug.WriteLine($"          { record.name}");
+                            // ////Debug.WriteLine($"          { record.name}");
                             await sw.WriteLineAsync($"          { record.name}");
                             // template++;
                             continue;
                         }
-                      // ////Debug.WriteLine(projectTemplate[template]);
-                       await sw.WriteAsync(projectTemplate[template] + Environment.NewLine);
+                        // ////Debug.WriteLine(projectTemplate[template]);
+                        await sw.WriteAsync(projectTemplate[template] + Environment.NewLine);
                     }
                     //walk each list and add trait_type and value as
                     for (int index = 0; index < record.trait_type.Count; index++)
                     {
                         sbJsonRecord.Append("		 ");
                         sbJsonRecord.Append(record.trait_type[index]);
-                       await sw.WriteAsync(sbJsonRecord);
+                        await sw.WriteAsync(sbJsonRecord);
                         //Debug.Write(sbJsonRecord);
                         sbJsonRecord.Clear();
                     }
 
                     sbJsonRecord.Append("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
-                  //  //Debug.Write(sbJsonRecord.ToString());
-                 
+                    //  //Debug.Write(sbJsonRecord.ToString());
+
                     //////Debug.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
                     await sw.WriteLineAsync("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
                     sbJsonRecord.Clear();
@@ -316,21 +330,21 @@ namespace WpfHashlipsJSONConverter
             if (jsonFiles.Length > 0)
             {
                 foreach (string jsonFile in jsonFiles)
-                    filesProcessed.Add(jsonFile);
-              
-                jsonText = await File.ReadAllTextAsync(filesProcessed[0].ToString());
+                {
+                    jsonText = await File.ReadAllTextAsync(jsonFile);
+                }
 
-
-                Application.Current.MainWindow = this;
-                Application.Current.MainWindow.Height = 700;
-                Application.Current.MainWindow.Width = 1550;
+                //Application.Current.MainWindow = this;
+                //Application.Current.MainWindow.Height = 700;
+                //Application.Current.MainWindow.Width = 1550;
                 txtblkFileContent.Visibility = Visibility.Visible;
 
-                txtblkFileContent.Text = jsonText;
+                //txtblkFileContent.Text = jsonText;
             }
             Directory.SetCurrentDirectory(Path.GetDirectoryName(FullPathToDB));
         }
-        public List<string> GetTables(string fullPathDB)
+
+        public async Task<List<string>> GetTablesAsync(string fullPathDB)
         {
             using SQLiteConnection connection = new($"Data Source={fullPathDB}");
             connection.Open();
@@ -338,7 +352,7 @@ namespace WpfHashlipsJSONConverter
             //  _fullPathToDB = connection.FileName;
             //  FullPathToDB = fullPathDB;
             List<string> rtables = new();
-            DataTable dt = connection.GetSchema("Tables");
+            DataTable dt = await connection.GetSchemaAsync("Tables");
             foreach (DataRow row in dt.Rows)
             {
                 string tablename = (string)row[2];
@@ -348,11 +362,10 @@ namespace WpfHashlipsJSONConverter
             return rtables;
         }
 
-        public void OpenDB()
+        public async void OpenDB()
         {
-            // string currdir = string.Empty;
             int filecount = 0;
-            string fnameOnly = string.Empty;
+            string DatabaseFileNameOnly = string.Empty;
             List<String> filesProcessed = new List<String>();
 
             Microsoft.Win32.OpenFileDialog openFile = new()
@@ -367,11 +380,12 @@ namespace WpfHashlipsJSONConverter
                 // currdir = Directory.GetCurrentDirectory();
                 filecount = openFile.FileNames.Length;
                 fileNameToDisplay.IsEnabled = true;
-                fileNameToDisplay.Content = Path.GetFileName(openFile.FileName);
+                DatabaseFileNameOnly = Path.GetFileName(openFile.FileName);
+                fileNameToDisplay.Content = DatabaseFileNameOnly;
                 fileNameToDisplay.Visibility = System.Windows.Visibility.Visible;
 
                 FullPathToDB = openFile.FileName;
-                filesProcessed = GetTables(FullPathToDB);
+                filesProcessed = await GetTablesAsync(FullPathToDB);
 
                 foreach (string table in filesProcessed)
                 {
@@ -387,6 +401,7 @@ namespace WpfHashlipsJSONConverter
                 tableList.ItemsSource = _alltables;
             }
         }
+
         private string[] GetListOfJsonFiles()
         {
             view.IsChecked = false;
@@ -401,19 +416,19 @@ namespace WpfHashlipsJSONConverter
             return openFile.FileNames;
         }
 
-       // public string GetProjectMetadataFile()
-       // {
-       //     Microsoft.Win32.OpenFileDialog openFile = new()
-       //     {
-       //         Filter = "Json files|projectmetadata.json",
-       //         Title = "PROJECTMETADAT.JSON",
-       //         Multiselect = false
-       //     };
-       //     var result = openFile.ShowDialog();
-       //
-       //     List<string> list = new List<string>(openFile.FileNames);
-       //     return list[0];
-       // }
+        // public string GetProjectMetadataFile()
+        // {
+        //     Microsoft.Win32.OpenFileDialog openFile = new()
+        //     {
+        //         Filter = "Json files|projectmetadata.json",
+        //         Title = "PROJECTMETADAT.JSON",
+        //         Multiselect = false
+        //     };
+        //     var result = openFile.ShowDialog();
+        //
+        //     List<string> list = new List<string>(openFile.FileNames);
+        //     return list[0];
+        // }
     }
 
     public class JSONFiles
