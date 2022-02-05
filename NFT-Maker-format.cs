@@ -91,7 +91,7 @@ namespace WpfHashlipsJSONConverter
 
             }
             //add dna, twitter and web addresses as traits
-        
+            attribute.Clear();
             attribute.Append(dna.Trim());
             trait_type.Add(" "+attribute + Environment.NewLine);
 

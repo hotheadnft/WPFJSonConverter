@@ -141,7 +141,7 @@
                         Grid.Column="0"
                         Width="250"
                         Margin="20,5,3,5"
-                        Content="To start click Open DB"
+                        Content="Click Open DB"
                         FontSize="20"
                         FontWeight="Bold" />
                     <RadioButton
