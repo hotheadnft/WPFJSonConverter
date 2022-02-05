@@ -132,9 +132,11 @@ namespace WpfHashlipsJSONConverter
 
         private async void AddButton_Checked(object sender, RoutedEventArgs e)
         {
+            open.IsChecked = false;
             add.IsChecked = false;
             int fileCount;
-
+            txtblkFileContent.Text = String.Empty;
+            txtblkFileContent.Visibility = Visibility.Hidden;
             Microsoft.Win32.OpenFileDialog openFile = new()
             {
                 Filter = "Json files|*.json",
@@ -147,8 +149,6 @@ namespace WpfHashlipsJSONConverter
                 txtblkFileContent.Visibility = Visibility.Visible;
                 fileCount = openFile.FileNames.Length;
                 txtblkFileContent.Text = "Converting...";
-
-                StreamWriter sw;
                 string?[] path_parts;
                 string[] content = { "" };
                 string imagePath, imageFileName;
@@ -209,54 +209,58 @@ namespace WpfHashlipsJSONConverter
                     File.Delete(filesProcessed[i]);
 #endif
                     StringBuilder sbJsonRecord = new StringBuilder();
-                    sw = File.CreateText(filesProcessed[i]);
-                    //build attributes in two lists as members of record
-                    record.parseAttributes(NftMakerToConvert);
-                    //write out top half of template
-                    for (int template = 0; template < 15; template++)
+                    FileStream fs = new FileStream(filesProcessed[i], FileMode.Create, FileAccess.Write);
+                    using (StreamWriter sw =new StreamWriter(fs))
                     {
-                        if (template == 4)
+                        // sw = File.CreateText(filesProcessed[i]);
+                        //build attributes in two lists as members of record
+                        record.parseAttributes(NftMakerToConvert);
+                        //write out top half of template
+                        for (int template = 0; template < 15; template++)
                         {
-                            // ////Debug.WriteLine($"        { record.name}");
-                            await sw.WriteLineAsync($"        { record.name}");
-                            // template++;
-                            continue;
+                            if (template == 4)
+                            {
+                                // ////Debug.WriteLine($"        { record.name}");
+                                await sw.WriteLineAsync($"        { record.name}");
+                                // template++;
+                                continue;
+                            }
+                            //replace description in line 8
+                            if (template == 7)
+                            {
+                                //  ////Debug.WriteLine($"          { record.description},");
+                                await sw.WriteLineAsync($"          { record.description},");
+                                // template++;
+                                continue;
+                            }
+                            if (template == 10)
+                            {
+                                // ////Debug.WriteLine($"          { record.name}");
+                                await sw.WriteLineAsync($"          { record.name}");
+                                // template++;
+                                continue;
+                            }
+                            // ////Debug.WriteLine(projectTemplate[template]);
+                            await sw.WriteAsync(projectTemplate[template] + Environment.NewLine);
                         }
-                        //replace description in line 8
-                        if (template == 7)
+                        //walk each list and add trait_type and value as
+                        for (int index = 0; index < record.trait_type.Count; index++)
                         {
-                            //  ////Debug.WriteLine($"          { record.description},");
-                            await sw.WriteLineAsync($"          { record.description},");
-                            // template++;
-                            continue;
+                            sbJsonRecord.Append("		 ");
+                            sbJsonRecord.Append(record.trait_type[index]);
+                            await sw.WriteAsync(sbJsonRecord);
+                            //Debug.Write(sbJsonRecord);
+                            sbJsonRecord.Clear();
                         }
-                        if (template == 10)
-                        {
-                            // ////Debug.WriteLine($"          { record.name}");
-                            await sw.WriteLineAsync($"          { record.name}");
-                            // template++;
-                            continue;
-                        }
-                        // ////Debug.WriteLine(projectTemplate[template]);
-                        await sw.WriteAsync(projectTemplate[template] + Environment.NewLine);
-                    }
-                    //walk each list and add trait_type and value as
-                    for (int index = 0; index < record.trait_type.Count; index++)
-                    {
-                        sbJsonRecord.Append("		 ");
-                        sbJsonRecord.Append(record.trait_type[index]);
-                        await sw.WriteAsync(sbJsonRecord);
-                        //Debug.Write(sbJsonRecord);
+
+                        sbJsonRecord.Append("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
+                        //  //Debug.Write(sbJsonRecord.ToString());
+
+                        //////Debug.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
+                        await sw.WriteLineAsync("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
                         sbJsonRecord.Clear();
+                        sw.Close();
                     }
-
-                    sbJsonRecord.Append("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
-                    //  //Debug.Write(sbJsonRecord.ToString());
-
-                    //////Debug.WriteLine("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
-                    await sw.WriteLineAsync("    }" + Environment.NewLine + "   }," + Environment.NewLine + "    \"version\": \"1.0\"" + Environment.NewLine + "   }" + Environment.NewLine + "}");
-                    sbJsonRecord.Clear();
-                    sw.Close();
                 }
                 StringBuilder imagesPathToCopyFrom = new StringBuilder();
                 possibleFilesProcessed = Directory.GetFiles($"{pathToCopyJSONFrom}\\images");
@@ -318,13 +322,14 @@ namespace WpfHashlipsJSONConverter
         {
             OpenDB();
             add.IsEnabled = true;
-            view.IsEnabled = true;
+            view.IsEnabled = true;            
         }
 
         private async void View_Checked(object sender, RoutedEventArgs e)
         {
             string[] jsonFiles;
-
+            txtblkFileContent.Text = String.Empty;
+            txtblkFileContent.Visibility = Visibility.Hidden;
             //  List<string> viewFile = new List<string>();
             jsonFiles = GetListOfJsonFiles();
             if (jsonFiles.Length > 0)
@@ -364,6 +369,8 @@ namespace WpfHashlipsJSONConverter
 
         public async void OpenDB()
         {
+            open.IsChecked=false; 
+            txtblkFileContent.Visibility=Visibility.Hidden;
             int filecount = 0;
             string DatabaseFileNameOnly = string.Empty;
             List<String> filesProcessed = new List<String>();
